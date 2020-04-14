@@ -1,6 +1,7 @@
 
 #ifndef RTV_1_H
 #define RTV_1_H
+
 #include <libft.h>
 #include <ft_printf.h>
 # include <math.h>
@@ -19,8 +20,13 @@
 # define GRAY 0x888888
 # define DARKGRAY 0x222222
 # define WHITE 0xffffff
-# define WIDTH 1200
-# define HEIGHT 720
+# define WIDTH 100
+# define HEIGHT 100
+
+typedef struct	s_options
+{
+	int			simple;
+}				t_options;
 
 typedef struct	s_color
 {
@@ -46,29 +52,103 @@ typedef struct	s_image
 	t_color		**pixels;
 }				t_image;
 
-typedef struct	s_vec3
+typedef struct	s_vec4
 {
 	double		x;
 	double		y;
 	double		z;
-}				t_vec3;
+	double		w;
+}				t_vec4;
 
-typedef	struct	s_triangle
+typedef struct	s_ray
 {
-	t_vec3		a;
-	t_vec3		b;
-	t_vec3		c;
-	t_color		col;
-}				t_triangle;
+	t_vec4		origin;
+	t_vec4		direction;
+}				t_ray;
+
+typedef	struct	s_inters
+{
+	int			count;
+	double		t[2];
+}				t_inters;
+
+typedef struct	s_intersection
+{
+	int			object;
+	double		t;
+}				t_intersection;
+
+typedef struct	s_4x4matrix
+{
+	double		m[4][4];
+}				t_4x4matrix;
+
+typedef struct	s_2x2matrix
+{
+	double		m[2][2];
+}				t_2x2matrix;
+
+typedef struct	s_3x3matrix
+{
+	double		m[3][3];
+}				t_3x3matrix;
+
+typedef struct	s_sphere
+{
+	int			id;
+	double		transform[4][4];
+}				t_sphere;
 
 typedef struct	s_data
 {
 	t_mlx		mlx;
 	t_image		img;
+	t_options	opt;
 }				t_data;
 
 int				input_manager(int key, t_data *data);
 void			close_program(t_data *data);
 void			image_to_window(t_data *data);
+t_vec4			vec4_cros(t_vec4 v1, t_vec4 v2);
+double			vec4_dot(t_vec4 v1, t_vec4 v2);
+double			vec4_magnitude(t_vec4 v);
+t_vec4			vec4_normalize(t_vec4 v);
+t_vec4			vec4_divide(t_vec4 v1, t_vec4 v2);
+t_vec4			vec4_multiply_2(t_vec4 v1, t_vec4 v2);
+t_vec4			vec4_multiply_1(t_vec4 v1, double d);
+t_vec4			vec4_substract(t_vec4 v1, t_vec4 v2);
+t_vec4			vec4_add(t_vec4 v1, t_vec4 v2);
+int				vec4_compare(t_vec4 v1, t_vec4 v2);
+t_vec4			new_vec4(double x, double y, double z, double w);
+t_color			color_multiply(t_color c1, t_color c2);
+t_color			color_add(t_color c1, t_color c2);
+t_color			color_substract(t_color c1, t_color c2);
+t_color			new_color(int hex);
+t_4x4matrix		matrix_multiply(double m1[4][4], double m2[4][4]);
+t_vec4			matrix_vec4_multiply(double	m[4][4], t_vec4 p);
+int				matrix_4x4_compare(double m1[4][4], double m2[4][4]);
+int				matrix_3x3_compare(double m1[3][3], double m2[3][3]);
+int				matrix_2x2_compare(double m1[2][2], double m2[2][2]);
+void			put4x4matrix(double m[4][4]);
+void			put2x2matrix(double m[2][2]);
+void			put3x3matrix(double m[3][3]);
+t_4x4matrix		matrix_transpose(double m[4][4]);
+double			cofactor3x3(double m[3][3], int row, int column);
+t_3x3matrix		submatrix4x4(double m[4][4], int row, int column);
+t_2x2matrix		submatrix3x3(double m[3][3], int row, int column);
+double			determinant2x2(double m[2][2]);
+double			determinant3x3(double m[3][3]);
+double			cofactor4x4(double m[4][4], int row, int column);
+t_4x4matrix		matrix4x4_inverse(double m[4][4]);
+t_4x4matrix		translate(double x, double y, double z);
+t_4x4matrix		scale(double x, double y, double z);
+t_4x4matrix		rotate_x(double r);
+t_4x4matrix		rotate_y(double r);
+t_4x4matrix		rotate_z(double r);
+t_intersection *intersect(t_sphere s, t_ray r);
+t_sphere	new_sphere(int id);
+t_ray	transform_ray(t_ray r1, double	m[4][4]);
+t_intersection	hit(t_intersection *iptr);
+t_ray	new_ray(t_vec4 orig, t_vec4 direction);
 
 # endif
