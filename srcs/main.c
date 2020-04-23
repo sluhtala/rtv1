@@ -91,16 +91,16 @@ void	update_buffer(t_image img)
 		x = 0;
 		while (x < WIDTH)
 		{
-			img.buf[x * 4 + y * WIDTH * 4 + 0] = img.pixels[y][x].a;
-			img.buf[x * 4 + y * WIDTH * 4 + 1] = img.pixels[y][x].r;
-			img.buf[x * 4 + y * WIDTH * 4 + 2] = img.pixels[y][x].b;
-			img.buf[x * 4 + y * WIDTH * 4 + 3] = img.pixels[y][x].g;
+			img.buf[x * 4 + y * WIDTH * 4 + 0] = (double)img.pixels[y][x].a * 255.0;
+			img.buf[x * 4 + y * WIDTH * 4 + 1] = (double)img.pixels[y][x].r * 255.0;
+			img.buf[x * 4 + y * WIDTH * 4 + 2] = (double)img.pixels[y][x].b * 255.0;
+			img.buf[x * 4 + y * WIDTH * 4 + 3] = (double)img.pixels[y][x].g * 255.0;
 			if (img.endian == 0)
 			{
-				img.buf[x * 4 + y * WIDTH * 4 + 0] = img.pixels[y][x].b;
-				img.buf[x * 4 + y * WIDTH * 4 + 1] = img.pixels[y][x].g;
-				img.buf[x * 4 + y * WIDTH * 4 + 2] = img.pixels[y][x].r;
-				img.buf[x * 4 + y * WIDTH * 4 + 3] = img.pixels[y][x].a;
+				img.buf[x * 4 + y * WIDTH * 4 + 0] = (double)img.pixels[y][x].b * 255.0;
+				img.buf[x * 4 + y * WIDTH * 4 + 1] = (double)img.pixels[y][x].g * 255.0;
+				img.buf[x * 4 + y * WIDTH * 4 + 2] = (double)img.pixels[y][x].r * 255.0;
+				img.buf[x * 4 + y * WIDTH * 4 + 3] = (double)img.pixels[y][x].a * 255.0;
 			}
 			x++;
 		}
@@ -128,29 +128,40 @@ void	set_options(t_data *data, int ac, char **av)
 	}
 }
 
-t_color		get_color(double world_y, double world_x, t_sphere s)
+t_color		get_color(double world_y, double world_x, t_sphere s, t_light light)
 {
 	t_color color;
 	t_ray	r;
 	t_vec4 r_origin;
-	t_vec4 position;
+	t_vec4 pos;
 	t_intersection *xs;
+	t_intersection hitt;
+	t_vec4 point;
+	t_vec4 normal;
+	t_vec4 eye;
 
-	position = new_vec4(world_x, world_y, 10.0, 1.0);
-	r_origin = new_vec4(0.0, 0.0, -5.0, 1.0);
+	pos = new_vec4(world_x, world_y, 10.0, 1);
+	r_origin = new_vec4(0.0, 0.0, -6.0, 1.0);
 	color = new_color(0);
 	r.origin = r_origin;
-	r.direction = vec4_normalize(vec4_substract(position, r_origin));
+	r.direction = vec4_normalize(vec4_substract(pos, r_origin));
 	xs = intersect(s, r);
-	if (hit(xs).t != -1000)
+	
+	hitt = hit(xs);
+	if (hitt.t != -1000)
 	{
-		color = new_color(0xff0000);
+		point = position(r, hitt.t);
+		normal = normal_at(hitt.object, point);
+		eye = vec4_multiply_1(r.direction, -1);	
+		color = lighting(hitt.object.material, light, point, eye, normal);
+//		putcol(color);
+		printf("");
 	}
 	free(xs);
 	return (color);
 }
 
-void	sphere_test(t_data *data)
+int	 sphere_test(t_data *data)
 {
 	int x;
 	int y;
@@ -159,14 +170,26 @@ void	sphere_test(t_data *data)
 	double half;
 	double pixel_s;
 	t_sphere sphere;
+	t_vec4 light_pos;
+	t_light light;
 
 	sphere = new_sphere(1);
+	sphere.material.color.r = 0;
+	sphere.material.color.g = 1;
+	sphere.material.color.b = 0;
+	light = point_light(new_vec4(-10, 10, -10, 1), new_color(WHITE));
+
 	pixel_s = 7.0 / WIDTH;
 	half = 7.0 / 2.0;
 	y = 0;
-	world_x = 0.0;
-	world_y = 0.0;
-
+	//sphere.transform = matrix_multiply(rotate_z(M_PI * 40.0/180.0).m,scale(.5,.5,.5).m);
+	//sphere.transform = matrix_multiply(sphere.transform.m, translate(0,0.2,3).m);
+	//sphere.transform = set_transform(sphere, rotate_z(M_PI*45/180));
+	sphere.transform = set_transform(sphere, translate(0.5,0.5,0.5));
+//	sphere.transform = set_transform(sphere, matrix4x4_inverse(sphere.transform.m));
+//	put4x4matrix(sphere.transform.m);
+	//sphere.transform = set_transform(sphere, scale(1,.4,1));
+	printf("");
 	while (y < HEIGHT)
 	{
 		x = 0;
@@ -174,12 +197,18 @@ void	sphere_test(t_data *data)
 		while (x < WIDTH)
 		{
 			world_x = -half + pixel_s * x;
-			data->img.pixels[y][x] = get_color(world_y, world_x, sphere);			
-			//data->img.pixels[y][x] = new_color(0xff0000);
+			data->img.pixels[y][x] = get_color(world_y, world_x, sphere, light);			
 			x++;
 		}
 		y++;
 	}
+	return (1);
+}
+
+void	my_test()
+{
+	return ;
+
 }
 
 int		main(int argc, char **argv)
@@ -191,6 +220,7 @@ int		main(int argc, char **argv)
 	set_options(&data, argc, argv);
 	init_rt(&data);
 	sphere_test(&data);	
+	my_test();
 	update_buffer(data.img);
 	image_to_window(&data);
 	if (data.opt.simple == 0)
@@ -199,6 +229,7 @@ int		main(int argc, char **argv)
 		mlx_hook(data.mlx.win, 17, 0, (void*)close_program, &data);
 		mlx_loop(data.mlx.ptr);
 	}
+//	ft_printf("");
 	exit(0);
 	return (0);
 }

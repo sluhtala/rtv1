@@ -1,29 +1,5 @@
 #include "rtv_1.h"
 
-t_sphere	new_sphere(int id)
-{
-	t_sphere	s;
-
-	s.id = id;
-	s.transform[0][0] = 1; 
-	s.transform[0][1] = 0;
-	s.transform[0][2] = 0;
-	s.transform[0][3] = 0;
-	s.transform[1][0] = 0;
-	s.transform[1][1] = 1;
-	s.transform[1][2] = 0;
-	s.transform[1][3] = 0;
-	s.transform[2][0] = 0;
-	s.transform[2][1] = 0;
-	s.transform[2][2] = 1;
-	s.transform[2][3] = 0;
-	s.transform[3][0] = 0;
-	s.transform[3][1] = 0;
-	s.transform[3][2] = 0;
-	s.transform[3][3] = 1;
-	return (s);
-}
-
 t_ray	new_ray(t_vec4 orig, t_vec4 direction)
 {
 	t_ray r;

@@ -20,8 +20,8 @@
 # define GRAY 0x888888
 # define DARKGRAY 0x222222
 # define WHITE 0xffffff
-# define WIDTH 100
-# define HEIGHT 100
+# define WIDTH 500
+# define HEIGHT 500
 
 typedef struct	s_options
 {
@@ -30,10 +30,10 @@ typedef struct	s_options
 
 typedef struct	s_color
 {
-	int			r;
-	int			g;
-	int			b;
-	int			a;
+	double		r;
+	double		g;
+	double		b;
+	double		a;
 }				t_color;
 
 typedef struct	s_mlx
@@ -72,11 +72,6 @@ typedef	struct	s_inters
 	double		t[2];
 }				t_inters;
 
-typedef struct	s_intersection
-{
-	int			object;
-	double		t;
-}				t_intersection;
 
 typedef struct	s_4x4matrix
 {
@@ -93,11 +88,34 @@ typedef struct	s_3x3matrix
 	double		m[3][3];
 }				t_3x3matrix;
 
+
+typedef struct	s_light
+{
+	t_vec4		position;
+	t_color		intensitivity;
+}				t_light;
+
+typedef struct s_material
+{
+	t_color	color;
+	double	ambient;
+	double	diffuse;
+	double	specular;
+	double	shininess;
+}				t_material;
+
 typedef struct	s_sphere
 {
 	int			id;
-	double		transform[4][4];
+	t_4x4matrix	transform;
+	t_material	material;
 }				t_sphere;
+
+typedef struct	s_intersection
+{
+	t_sphere	object;
+	double		t;
+}				t_intersection;
 
 typedef struct	s_data
 {
@@ -121,6 +139,8 @@ t_vec4			vec4_add(t_vec4 v1, t_vec4 v2);
 int				vec4_compare(t_vec4 v1, t_vec4 v2);
 t_vec4			new_vec4(double x, double y, double z, double w);
 t_color			color_multiply(t_color c1, t_color c2);
+t_color			color_dmultiply(t_color c1, t_color c2);
+t_color			color_multiply_1(t_color c1, double n);
 t_color			color_add(t_color c1, t_color c2);
 t_color			color_substract(t_color c1, t_color c2);
 t_color			new_color(int hex);
@@ -150,5 +170,13 @@ t_sphere	new_sphere(int id);
 t_ray	transform_ray(t_ray r1, double	m[4][4]);
 t_intersection	hit(t_intersection *iptr);
 t_ray	new_ray(t_vec4 orig, t_vec4 direction);
+t_vec4		normal_at(t_sphere s, t_vec4 world_point);
+t_material	material();
+t_light		point_light(t_vec4 position, t_color intensitivity);
+t_vec4			reflect(t_vec4 in, t_vec4 normal);
+t_vec4	position(t_ray ray, double t);
+t_color		lighting(t_material material, t_light light,t_vec4 point,t_vec4 eyev,t_vec4 normalv);
+t_4x4matrix	set_transform(t_sphere s, t_4x4matrix transformation);
 
+void	putcol(t_color c);
 # endif
