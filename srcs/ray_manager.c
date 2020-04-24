@@ -9,7 +9,7 @@ t_ray	new_ray(t_vec4 orig, t_vec4 direction)
 	return (r);
 }
 
-t_ray	transform_ray(t_ray r1, double	m[4][4])
+t_ray	transform_ray(t_ray r1, double	**m)
 {
 	t_ray r2;
 

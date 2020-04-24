@@ -39,8 +39,11 @@ t_intersection *intersect(t_sphere s, t_ray r)
 	double abc[3];
 	t_inters xs;
 	t_ray r2;
+	double **inv;
 
-	r2 = transform_ray(r, matrix4x4_inverse(s.transform.m).m);	
+	inv = matrix_inverse(s.transform, 4);
+	r2 = transform_ray(r, inv);
+	delete_matrix(&inv, 4);	
 	sphere_to_ray = vec4_substract(r2.origin, new_vec4(0, 0, 0, 1.0)); 
 	abc[0] = vec4_dot(r2.direction, r2.direction);	
 	abc[1] = 2.0 * vec4_dot(r.direction, sphere_to_ray);
