@@ -1,6 +1,5 @@
 #include "rtv_1.h"
 
-/*
 double	determinant2x2(double m[2][2])
 {
 	double d;
@@ -39,7 +38,7 @@ double	determinant4x4(double m[4][4])
 	return (d);
 }
 
-t_4x4matrix	new_matrix_4x4(double m[4][4])
+t_4x4matrix	new_matrix(double m[4][4])
 {
 	int x;
 	int y;
@@ -58,6 +57,7 @@ t_4x4matrix	new_matrix_4x4(double m[4][4])
 	}
 	return (m2);
 }
+
 t_4x4matrix matrix4x4_inverse(double m[4][4])
 {
 	t_4x4matrix m2;
@@ -67,7 +67,7 @@ t_4x4matrix matrix4x4_inverse(double m[4][4])
 	int y;
 
 	if (determinant4x4(m) == 0)
-		return (new_matrix_4x4(m));
+		return (new_matrix(m));
 	d = determinant4x4(m);
 	y = 0;
 	while (y < 4)
@@ -81,32 +81,5 @@ t_4x4matrix matrix4x4_inverse(double m[4][4])
 		y++;
 	}
 	m2 = matrix_transpose(inverse);
-	return (m2);
-}
-*/
-double		**matrix_inverse(double **m, int size)
-{
-	double  **m2;
-	double **inverse;
-	double d;
-	int x;
-	int y;
-	if (determinant(m, size) == 0)
-		return (NULL);
-	inverse = new_matrix(size, size);
-	d = determinant(m, size);
-	y = 0;
-	while (y < size)
-	{
-		x = 0;
-		while (x < size)
-		{
-			inverse[y][x] = matrix_cofactor(m, size, y, x) / d;
-			x++;
-		}
-		y++;
-	}
-	m2 = matrix_transpose(inverse, size);
-	delete_matrix(&inverse, size);
 	return (m2);
 }

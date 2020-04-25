@@ -72,7 +72,6 @@ typedef	struct	s_inters
 	double		t[2];
 }				t_inters;
 
-// matrix without being data struct
 
 typedef struct	s_4x4matrix
 {
@@ -108,7 +107,7 @@ typedef struct s_material
 typedef struct	s_sphere
 {
 	int			id;
-	double		**transform;
+	t_4x4matrix	transform;
 	t_material	material;
 }				t_sphere;
 
@@ -145,30 +144,30 @@ t_color			color_multiply_1(t_color c1, double n);
 t_color			color_add(t_color c1, t_color c2);
 t_color			color_substract(t_color c1, t_color c2);
 t_color			new_color(int hex);
-//t_4x4matrix		matrix_multiply(double m1[4][4], double m2[4][4]);
-t_vec4			matrix_vec4_multiply(double	**m, t_vec4 p);
-//int				matrix_4x4_compare(double m1[4][4], double m2[4][4]);
-//int				matrix_3x3_compare(double m1[3][3], double m2[3][3]);
-//int				matrix_2x2_compare(double m1[2][2], double m2[2][2]);
-//void			put4x4matrix(double m[4][4]);
-//void			put2x2matrix(double m[2][2]);
-//void			put3x3matrix(double m[3][3]);
-//t_4x4matrix		matrix_transpose(double m[4][4]);
-//double			cofactor3x3(double m[3][3], int row, int column);
-//t_3x3matrix		submatrix4x4(double m[4][4], int row, int column);
-//t_2x2matrix		submatrix3x3(double m[3][3], int row, int column);
-//double			determinant2x2(double m[2][2]);
-//double			determinant3x3(double m[3][3]);
-//double			cofactor4x4(double m[4][4], int row, int column);
-//t_4x4matrix		matrix4x4_inverse(double m[4][4]);
-double	**translate(double x, double y, double z);
-double	**scale(double x, double y, double z);
-double	**rotate_x(double r);
-double	**rotate_y(double r);
-double	**rotate_z(double r);
+t_4x4matrix		matrix_multiply(double m1[4][4], double m2[4][4]);
+t_vec4			matrix_vec4_multiply(double	m[4][4], t_vec4 p);
+int				matrix_4x4_compare(double m1[4][4], double m2[4][4]);
+int				matrix_3x3_compare(double m1[3][3], double m2[3][3]);
+int				matrix_2x2_compare(double m1[2][2], double m2[2][2]);
+void			put4x4matrix(double m[4][4]);
+void			put2x2matrix(double m[2][2]);
+void			put3x3matrix(double m[3][3]);
+t_4x4matrix		matrix_transpose(double m[4][4]);
+double			cofactor3x3(double m[3][3], int row, int column);
+t_3x3matrix		submatrix4x4(double m[4][4], int row, int column);
+t_2x2matrix		submatrix3x3(double m[3][3], int row, int column);
+double			determinant2x2(double m[2][2]);
+double			determinant3x3(double m[3][3]);
+double			cofactor4x4(double m[4][4], int row, int column);
+t_4x4matrix		matrix4x4_inverse(double m[4][4]);
+t_4x4matrix		translate(double x, double y, double z);
+t_4x4matrix		scale(double x, double y, double z);
+t_4x4matrix		rotate_x(double r);
+t_4x4matrix		rotate_y(double r);
+t_4x4matrix		rotate_z(double r);
 t_intersection *intersect(t_sphere s, t_ray r);
 t_sphere	new_sphere(int id);
-//t_ray	transform_ray(t_ray r1, double	m[4][4]);
+t_ray	transform_ray(t_ray r1, double	m[4][4]);
 t_intersection	hit(t_intersection *iptr);
 t_ray	new_ray(t_vec4 orig, t_vec4 direction);
 t_vec4		normal_at(t_sphere s, t_vec4 world_point);
@@ -177,21 +176,7 @@ t_light		point_light(t_vec4 position, t_color intensitivity);
 t_vec4			reflect(t_vec4 in, t_vec4 normal);
 t_vec4	position(t_ray ray, double t);
 t_color		lighting(t_material material, t_light light,t_vec4 point,t_vec4 eyev,t_vec4 normalv);
-//t_4x4matrix	set_transform(t_sphere s, t_4x4matrix transformation);
-
-
-double		**new_matrix(int rows, int columns);
-void		delete_matrix(double ***matrix, int rows);
-int			matrix_compare(double **m1, double **m2, int size);
-double		**matrix_multiply(double **m1, double **m2);
-double		 **matrix_transpose(double **m, int size);
-double		matrix_cofactor(double **m, int size, int row, int column);
-double	matrix_minor(double **m, int size, int row, int column);
-double	determinant(double **m, int size);
-double		**submatrix(double **m, int size, int row, int column);
-double		**matrix_inverse(double **m, int size);
-double		**set_transform(t_sphere s, double	**transformation);
-t_ray		transform_ray(t_ray r1, double	**m);
+t_4x4matrix	set_transform(t_sphere s, t_4x4matrix transformation);
 
 void	putcol(t_color c);
 # endif

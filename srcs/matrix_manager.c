@@ -1,6 +1,6 @@
 #include "rtv_1.h"
 
-t_vec4	matrix_vec4_multiply(double	**m, t_vec4 p)
+t_vec4	matrix_vec4_multiply(double	m[4][4], t_vec4 p)
 {
 	t_vec4		p2;
 	int			x;
@@ -13,20 +13,19 @@ t_vec4	matrix_vec4_multiply(double	**m, t_vec4 p)
 	return (p2);
 }
 
-double	**matrix_multiply(double **m1, double **m2)
+t_4x4matrix	matrix_multiply(double m1[4][4], double m2[4][4])
 {
-	double		**m;
+	t_4x4matrix	m;
 	int			x;
 	int			y;
 
 	y = 0;
-	m = new_matrix(4, 4);
 	while (y < 4)
 	{
 		x = 0;
 		while (x < 4)
 		{
-			m[y][x] = m1[y][0] * m2[0][x] + m1[y][1] * m2[1][x] +
+			m.m[y][x] = m1[y][0] * m2[0][x] + m1[y][1] * m2[1][x] +
 				m1[y][2] * m2[2][x] + m1[y][3] * m2[3][x];
 			x++;
 		}
@@ -75,26 +74,6 @@ int	matrix_3x3_compare(double m1[3][3], double m2[3][3])
 	return (1);
 }
 
-int	matrix_compare(double **m1, double **m2, int size)
-{
-	int x;
-	int y;
-
-	y = 0;
-	while (y < size)
-	{
-		x = 0;
-		while (x < size)
-		{
-			if (m1[y][x] != m2[y][x])
-				return (0);
-			x++;
-		}
-		y++;
-	}
-	return (1);
-}
-
 int	matrix_4x4_compare(double m1[4][4], double m2[4][4])
 {
 	int x;
@@ -113,34 +92,4 @@ int	matrix_4x4_compare(double m1[4][4], double m2[4][4])
 		y++;
 	}
 	return (1);
-}
-
-void		delete_matrix(double ***matrix, int rows)
-{
-	int i;
-
-	i = 0;
-	if (*matrix == NULL)
-		return ;
-	while (i < rows)
-	{
-		free((*matrix)[i]);
-		i++;
-	}
-	free(*matrix);
-}
-
-double		**new_matrix(int rows, int columns)
-{
-	double **m;
-	int i;
-
-	m = (double**)malloc(sizeof(double*) * rows);
-	i = 0;
-	while (i < rows)
-	{
-		m[i] = (double*)malloc(sizeof(double) * columns);
-		i++;
-	}
-	return (m);
 }

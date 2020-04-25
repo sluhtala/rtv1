@@ -5,12 +5,11 @@ void	put_vec(t_vec4 v)
 	ft_printf("vec: %.1f, %.1f, %.1f\n", v.x, v.y, v.z);	
 }
 
-double		**set_transform(t_sphere s, double **transformation)
+t_4x4matrix	set_transform(t_sphere s, t_4x4matrix transformation)
 {
-	double	**m;
+	t_4x4matrix m;
 
-	m = matrix_multiply(s.transform, transformation);
-	delete_matrix(&transformation, 4);
+	m = matrix_multiply(s.transform.m, transformation.m);
 	return (m);
 }
 
@@ -20,11 +19,11 @@ t_vec4		normal_at(t_sphere s, t_vec4 world_point )
 	t_vec4 object_normal;
 	t_vec4 world_normal;
 
-	object_point = matrix_vec4_multiply(matrix_inverse(
-		s.transform, 4), world_point);
+	object_point = matrix_vec4_multiply(matrix4x4_inverse(
+		s.transform.m).m, world_point);
 	object_normal = vec4_substract(object_point, new_vec4(0, 0, 0, 1));
 	world_normal = matrix_vec4_multiply(matrix_transpose(
-		matrix_inverse(s.transform, 4), 4), object_normal);
+		matrix4x4_inverse(s.transform.m).m).m, object_normal);
 	world_normal.w = 0;
 	return(vec4_normalize(world_normal));		
 }
@@ -45,23 +44,22 @@ t_sphere	new_sphere(int id)
 	t_sphere	s;
 
 	s.id = id;
-	s.transform = new_matrix(4, 4);
-	s.transform[0][0] = 1; 
-	s.transform[0][1] = 0;
-	s.transform[0][2] = 0;
-	s.transform[0][3] = 0;
-	s.transform[1][0] = 0;
-	s.transform[1][1] = 1;
-	s.transform[1][2] = 0;
-	s.transform[1][3] = 0;
-	s.transform[2][0] = 0;
-	s.transform[2][1] = 0;
-	s.transform[2][2] = 1;
-	s.transform[2][3] = 0;
-	s.transform[3][0] = 0;
-	s.transform[3][1] = 0;
-	s.transform[3][2] = 0;
-	s.transform[3][3] = 1;
+	s.transform.m[0][0] = 1; 
+	s.transform.m[0][1] = 0;
+	s.transform.m[0][2] = 0;
+	s.transform.m[0][3] = 0;
+	s.transform.m[1][0] = 0;
+	s.transform.m[1][1] = 1;
+	s.transform.m[1][2] = 0;
+	s.transform.m[1][3] = 0;
+	s.transform.m[2][0] = 0;
+	s.transform.m[2][1] = 0;
+	s.transform.m[2][2] = 1;
+	s.transform.m[2][3] = 0;
+	s.transform.m[3][0] = 0;
+	s.transform.m[3][1] = 0;
+	s.transform.m[3][2] = 0;
+	s.transform.m[3][3] = 1;
 	s.material = material();
 	return (s);
 }
