@@ -5,26 +5,33 @@ void	put_vec(t_vec4 v)
 	ft_printf("vec: %.1f, %.1f, %.1f\n", v.x, v.y, v.z);	
 }
 
-t_4x4matrix	set_transform(t_sphere s, t_4x4matrix transformation)
+void	set_transform(t_sphere *s, t_4x4matrix *transformation)
 {
-	t_4x4matrix m;
+	t_4x4matrix *m;
 
-	m = matrix_multiply(s.transform.m, transformation.m);
-	return (m);
+	m = matrix_multiply(s->transform, transformation);
+	free(s->transform);
+	s->transform = m;
+	free(transformation);
 }
 
-t_vec4		normal_at(t_sphere s, t_vec4 world_point )
+t_vec4		normal_at(t_sphere *s, t_vec4 world_point)
 {
 	t_vec4 object_point;
 	t_vec4 object_normal;
 	t_vec4 world_normal;
-
-	object_point = matrix_vec4_multiply(matrix4x4_inverse(
-		s.transform.m).m, world_point);
-	object_normal = vec4_substract(object_point, new_vec4(0, 0, 0, 1));
-	world_normal = matrix_vec4_multiply(matrix_transpose(
-		matrix4x4_inverse(s.transform.m).m).m, object_normal);
+	t_4x4matrix *mat;
+	t_4x4matrix *mat2;
+	
+	mat = matrix4x4_inverse(s->transform);
+	object_point = matrix_vec4_multiply(mat, world_point);
+	object_normal = vec4_substract(object_point, point(0, 0, 0));
+	
+	mat2 = matrix_transpose(mat);
+	world_normal = matrix_vec4_multiply(mat2, object_normal);
 	world_normal.w = 0;
+	free(mat2);
+	free(mat);
 	return(vec4_normalize(world_normal));		
 }
 
@@ -36,47 +43,27 @@ t_vec4 reflect(t_vec4 in, t_vec4 normal)
 	r = vec4_multiply_1(r, vec4_dot(in, normal));
 	r = vec4_substract(in, r);
 	return (r);
-
 }
 
-t_sphere	new_sphere(int id)
-{
-	t_sphere	s;
 
-	s.id = id;
-	s.transform.m[0][0] = 1; 
-	s.transform.m[0][1] = 0;
-	s.transform.m[0][2] = 0;
-	s.transform.m[0][3] = 0;
-	s.transform.m[1][0] = 0;
-	s.transform.m[1][1] = 1;
-	s.transform.m[1][2] = 0;
-	s.transform.m[1][3] = 0;
-	s.transform.m[2][0] = 0;
-	s.transform.m[2][1] = 0;
-	s.transform.m[2][2] = 1;
-	s.transform.m[2][3] = 0;
-	s.transform.m[3][0] = 0;
-	s.transform.m[3][1] = 0;
-	s.transform.m[3][2] = 0;
-	s.transform.m[3][3] = 1;
-	s.material = material();
+void		delete_sphere(t_sphere **sphere)
+{
+	if (*sphere == NULL)
+		return ;
+	if ((*sphere)->transform != NULL)
+		free((*sphere)->transform);
+	free((*sphere)->material);
+	free(*sphere);
+}
+
+t_sphere	*new_sphere(int id)
+{
+	t_sphere	*s;
+
+	s = (t_sphere*)malloc(sizeof(t_sphere));
+	s->transform = new_4x4matrix();
+	s->id = id;
+	set_identity_matrix(s->transform);
+	s->material = material();
 	return (s);
 }
-/*
-int main()
-{
-	t_vec4 normal;
-	t_vec4 point;
-	t_sphere s;
-	t_vec4 r;
-
-	s = new_sphere(1);
-	point = new_vec4(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0,1);
-	normal = normal_at(s, point);
-	r = reflect(new_vec4(0,-1,0,0), normal);
-	put_vec(r);	
-
-	return (0);
-}
-*/

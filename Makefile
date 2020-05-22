@@ -1,10 +1,11 @@
 NAME = rtv1
 
 SRCS = srcs/main.c srcs/input_manager.c srcs/vector_manager.c \
-	srcs/color_manager.c srcs/matrix_manager.c srcs/matrix_manager_2.c \
-	srcs/transformation.c srcs/matrix_determinant.c srcs/matrix_putmatrix.c \
-	srcs/matrix_submatrix.c srcs/intersections.c srcs/ray_manager.c \
-	srcs/sphere.c srcs/light.c
+	srcs/color_manager.c srcs/matrix/matrix_manager.c srcs/matrix/matrix_manager_2.c \
+	srcs/transformation.c srcs/matrix/matrix_determinant.c srcs/matrix/matrix_putmatrix.c \
+	srcs/matrix/matrix_submatrix.c srcs/intersections.c srcs/ray_manager.c \
+	srcs/sphere.c srcs/light.c srcs/rtv_init.c srcs/tuples.c srcs/ppm.c \
+	srcs/renderer.c
 
 OFILES = main.o
 

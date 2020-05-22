@@ -1,8 +1,7 @@
 #include "rtv_1.h"
 #include <stdarg.h>
 
-
-t_intersection	intersection(double t, t_sphere object)
+t_intersection	intersection(double t, t_sphere *object)
 {
 	t_intersection i;
 
@@ -32,7 +31,29 @@ t_intersection	*intersections(int count, ...)
 	return (iptr);
 }
 
-t_intersection *intersect(t_sphere s, t_ray r)
+t_intersection *intersect_world(t_world *w, t_ray r)
+{
+	int i;
+	t_intersection *xs;
+	t_intersection *temp;
+
+	xs = malloc(sizeof(t_intersection) * w->amount);
+	i = 0;
+	while (i < w->amount)
+	{
+		temp = intersect(w->spheres[i], r);
+		if (temp)
+			xs[i * 2] = temp[0];
+		if (temp)
+			xs[i * 2 + 1] = temp[1];
+		if (temp)
+			//free(temp);
+		i++;
+	}
+	return (xs);
+}
+
+t_intersection *intersect(t_sphere *s, t_ray r)
 {
 	double discriminant;
 	t_vec4 sphere_to_ray;
@@ -40,10 +61,10 @@ t_intersection *intersect(t_sphere s, t_ray r)
 	t_inters xs;
 	t_ray r2;
 
-	r2 = transform_ray(r, matrix4x4_inverse(s.transform.m).m);	
-	sphere_to_ray = vec4_substract(r2.origin, new_vec4(0, 0, 0, 1.0)); 
-	abc[0] = vec4_dot(r2.direction, r2.direction);	
-	abc[1] = 2.0 * vec4_dot(r.direction, sphere_to_ray);
+	r2 = transform_ray(r, matrix4x4_inverse(s->transform));	
+	sphere_to_ray = vec4_substract(r2.origin, new_vec4(0, 0, 0, 1.0));
+	abc[0] = vec4_dot(r2.direction, r2.direction);
+	abc[1] = 2.0 * vec4_dot(r2.direction, sphere_to_ray);
 	abc[2] = vec4_dot(sphere_to_ray, sphere_to_ray) - 1.0;
 	discriminant = abc[1] * abc[1] - 4.0 * abc[0] * abc[2];
 	if (discriminant < 0)

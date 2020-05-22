@@ -16,7 +16,7 @@ t_color		lighting(t_material material, t_light light,t_vec4 point,t_vec4 eyev,t_
 	double light_dot_normal;
 	double reflect_dot_eye;
 	double factor;
-	
+
 	effective_color = color_multiply(material.color, light.intensitivity);	
 	lightv = vec4_normalize(vec4_substract(light.position, point));
 	ambient = color_multiply_1(effective_color, material.ambient);
@@ -47,15 +47,16 @@ t_color		lighting(t_material material, t_light light,t_vec4 point,t_vec4 eyev,t_
 	return (result);
 }
 
-t_material	material()
+t_material	*material()
 {
-	t_material m;
+	t_material *m;
 
-	m.color = new_color(WHITE);
-	m.ambient = 0.1;
-	m.diffuse = 0.9;
-	m.specular = 0.9;
-	m.shininess = 200.0;	
+	m = (t_material*)malloc(sizeof(t_material));
+	m->color = new_color(WHITE);
+	m->ambient = 0.1;
+	m->diffuse = 0.9;
+	m->specular = 0.9;
+	m->shininess = 200.0;	
 	return (m);
 }
 
