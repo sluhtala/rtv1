@@ -26,22 +26,23 @@ void	init_rt(t_data *data)
 	int i;
 
 	i = 0;
-	data->img.pixels = NULL;
 	data->img.buf = NULL;
 	data->mlx.ptr = mlx_init();
 	if (data->opt.simple == 0)
-		data->mlx.win = mlx_new_window(data->mlx.ptr, WIDTH, HEIGHT, TITLE);
-	data->img.ptr = mlx_new_image(data->mlx.ptr, WIDTH, HEIGHT);
+		data->mlx.win = mlx_new_window(data->mlx.ptr, data->width, data->height, TITLE);
+	data->img.ptr = mlx_new_image(data->mlx.ptr, data->width, data->height);
 	data->img.buf = mlx_get_data_addr(data->img.ptr, &data->img.bit_pix, &data->img.size_line, &data->img.endian);
-	if (!(data->img.pixels = (t_color**)malloc(sizeof(t_color*) * HEIGHT)))
+/*	
+	if (!(data->img.pixels = (t_color**)malloc(sizeof(t_color*) * data->height)))
 		error_manager("MALLOC error");
-	while (i < HEIGHT)
+	while (i < data->height)
 	{
-		if (!(data->img.pixels[i] = (t_color*)malloc(sizeof(t_color) * WIDTH)))
+		if (!(data->img.pixels[i] = (t_color*)malloc(sizeof(t_color) * data->width)))
 			error_manager("MALLOC error");
 		i++;
 	}
-	init_pixels(data->img.pixels, WIDTH, HEIGHT);
+	init_pixels(data->img.pixels, data->width, data->height);
+*/
 }
 
 void	image_to_window(t_data *data)
@@ -53,27 +54,27 @@ void	image_to_window(t_data *data)
 	}
 }
 
-void	update_buffer(t_image img)
+void	update_buffer(t_image img, t_data *data)
 {
 	int x;
 	int y;
 	
 	y = 0;
-	while (y < HEIGHT)
+	while (y < data->height)
 	{
 		x = 0;
-		while (x < WIDTH)
+		while (x < data->width)
 		{
-			img.buf[x * 4 + y * WIDTH * 4 + 0] = (img.pixels[y][x].a * 255.0);
-			img.buf[x * 4 + y * WIDTH * 4 + 1] = (img.pixels[y][x].r * 255.0);
-			img.buf[x * 4 + y * WIDTH * 4 + 2] = (img.pixels[y][x].g * 255.0);
-			img.buf[x * 4 + y * WIDTH * 4 + 3] = (img.pixels[y][x].b * 255.0);
+			img.buf[x * 4 + y * data->width * 4 + 0] = (img.pixels[y][x].a * 255.0);
+			img.buf[x * 4 + y * data->width * 4 + 1] = (img.pixels[y][x].r * 255.0);
+			img.buf[x * 4 + y * data->width * 4 + 2] = (img.pixels[y][x].g * 255.0);
+			img.buf[x * 4 + y * data->width * 4 + 3] = (img.pixels[y][x].b * 255.0);
 			if (img.endian == 0)
 			{
-				img.buf[x * 4 + y * WIDTH * 4 + 0] = (img.pixels[y][x].b * 255.0);
-				img.buf[x * 4 + y * WIDTH * 4 + 1] = (img.pixels[y][x].g * 255.0);
-				img.buf[x * 4 + y * WIDTH * 4 + 2] = (img.pixels[y][x].r * 255.0);
-				img.buf[x * 4 + y * WIDTH * 4 + 3] = (img.pixels[y][x].a * 255.0);
+				img.buf[x * 4 + y * data->width * 4 + 0] = (img.pixels[y][x].b * 255.0);
+				img.buf[x * 4 + y * data->width * 4 + 1] = (img.pixels[y][x].g * 255.0);
+				img.buf[x * 4 + y * data->width * 4 + 2] = (img.pixels[y][x].r * 255.0);
+				img.buf[x * 4 + y * data->width * 4 + 3] = (img.pixels[y][x].a * 255.0);
 			}
 			x++;
 		}

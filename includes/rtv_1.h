@@ -19,8 +19,8 @@
 # define GRAY 0x888888
 # define DARKGRAY 0x222222
 # define WHITE 0xffffff
-# define WIDTH 100
-# define HEIGHT 100
+# define WIDTH 600
+# define HEIGHT 600
 
 typedef struct	s_options
 {
@@ -71,7 +71,6 @@ typedef	struct	s_inters
 	int			count;
 	double		t[2];
 }				t_inters;
-
 typedef struct	s_4x4matrix
 {
 	double		m[4][4];
@@ -87,6 +86,7 @@ typedef struct	s_3x3matrix
 	double		m[3][3];
 }				t_3x3matrix;
 
+typedef double **t_matrix;
 
 typedef struct	s_light
 {
@@ -110,26 +110,52 @@ typedef struct	s_sphere
 	t_material	*material;
 }				t_sphere;
 
-typedef struct	s_intersection
+typedef struct s_intersection
 {
-	t_sphere	*object;
-	double		t;
+	double t;
+	int count;
+	void *object;
 }				t_intersection;
-
-typedef struct	s_data
-{
-	t_mlx		mlx;
-	t_image		img;
-	t_options	opt;
-}				t_data;
 
 typedef struct	s_world
 {
-	int amount;
-
+	int objectamount;
+	int lightamount;
 	t_sphere **spheres;
-	t_light light;
+	t_light *lights;
 }				t_world;
+
+typedef struct s_computations
+{
+	double t;
+	int inside;
+	t_sphere *object;
+	t_vec4 point;
+	t_vec4 normalv;
+	t_vec4 eyev;
+}				t_computations;
+
+typedef struct	s_camera
+{
+	int hsize;
+	int vsize;
+	double field_of_view;
+	double pixel_size;
+	double half_width;
+	double half_height;
+	t_4x4matrix *transform;
+}				t_camera;
+
+typedef struct	s_data
+{
+	int			width;
+	int			height;
+	t_mlx		mlx;
+	t_image		img;
+	t_options	opt;
+	t_camera	camera;
+	t_world		*world;
+}				t_data;
 
 int				input_manager(int key, t_data *data);
 void			close_program(t_data *data);
@@ -172,10 +198,10 @@ t_4x4matrix		*scale(double x, double y, double z);
 t_4x4matrix		*rotate_x(double r);
 t_4x4matrix		*rotate_y(double r);
 t_4x4matrix		*rotate_z(double r);
-t_intersection *intersect(t_sphere *s, t_ray r);
 t_sphere	*new_sphere(int id);
 t_ray	transform_ray(t_ray r1, t_4x4matrix	*m);
-t_intersection	hit(t_intersection *iptr);
+t_intersection	*hit(t_intersection *iptr);
+t_intersection *intersect(t_sphere *s, t_ray r);
 t_ray	new_ray(t_vec4 orig, t_vec4 direction);
 t_vec4		normal_at(t_sphere *s, t_vec4 world_point);
 t_material	*material();
@@ -195,7 +221,7 @@ void	putcol(t_color c);
 void	init_rt(t_data *data);
 void	image_to_window(t_data *data);
 void	set_options(t_data *data, int ac, char **av);
-void	update_buffer(t_image img);
+void	update_buffer(t_image img, t_data *data);
 t_vec4	vector(double x, double y, double z);
 t_vec4	point(double x, double y, double z);
 void	img_to_ppm(t_image img, char *file_name);
@@ -203,6 +229,11 @@ void	img_to_ppm(t_image img, char *file_name);
 int	 sphere_test(t_data *data);
 void	set_identity_matrix(t_4x4matrix *m);
 t_intersection *intersect_world(t_world *w, t_ray r);
+t_world		*default_world();
+t_4x4matrix *view_transform(t_vec4 from,t_vec4 to,t_vec4 up);
+t_color		**render(t_camera camera, t_world *world);
+t_camera new_camera(int hsize, int vsize, double fov);
+t_color		color_at(t_world *w, t_ray r);
 
 
 

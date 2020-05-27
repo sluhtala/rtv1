@@ -1,6 +1,15 @@
 
 rtv1 notes
 
+
+objects
+	sphere
+		material
+		transform
+	sphere
+	cube
+	cylinder
+
 sphere / object
 	transformation
 light

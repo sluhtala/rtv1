@@ -7,7 +7,7 @@ t_color		get_color(double world_y, double world_x, t_sphere *s, t_light light)
 	t_vec4 r_origin;
 	t_vec4 pos;
 	t_intersection *xs;
-	t_intersection hitt;
+	t_intersection *hitt;
 	t_vec4 o_point;
 	t_vec4 normal;
 	t_vec4 eye;
@@ -19,14 +19,15 @@ t_color		get_color(double world_y, double world_x, t_sphere *s, t_light light)
 	r.direction = vec4_normalize(vec4_substract(pos, r_origin));
 	xs = intersect(s, r);
 	hitt = hit(xs);
-	if (hitt.t != -1000)
+	if (hitt)
 	{
-		o_point = position(r, hitt.t);
-		normal = normal_at(hitt.object, o_point);
+		o_point = position(r, hitt->t);
+		normal = normal_at(hitt->object, o_point);
 		eye = vec4_multiply_1(r.direction, -1);	
-		color = lighting(*hitt.object->material, light, o_point, eye, normal);
+		color = lighting(*((t_sphere*)(hitt->object))->material, light, o_point, eye, normal);
 	}
-	free(xs);
+	if (xs)
+		free(xs);
 	return (color);
 }
 
@@ -49,13 +50,10 @@ int	 sphere_test(t_data *data)
 
 	sphere = new_sphere(1);
 	sphere->material->color = new_color(RED);
-	light = point_light(point(-10.0, 10.0, -10.0), new_color(WHITE));
+	light = point_light(point(-10.0, 10.0, 0.0), new_color(WHITE));
 	pixel_s = 7.0 / WIDTH;
 	half = 7.0 / 2.0;
 	y = 0;
-	//set_transform(sphere, rotate_y(radi(90)));
-	//set_transform(sphere, scale(1,.4,.4));
-	set_transform(sphere, translate(1,1,1));
 	while (y < HEIGHT)
 	{
 		x = 0;
