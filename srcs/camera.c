@@ -3,18 +3,18 @@
 t_camera new_camera(int hsize, int vsize, double fov)
 {
 	t_camera cam;
-	t_4x4matrix *m;
+	t_matrix m;
 	double half_view;
 	double aspect;
 
 	cam.hsize = hsize;
 	cam.vsize = vsize;
-	m = new_4x4matrix();
-	set_identity_matrix(m);
+	m = new_matrix();
+	set_identity_matrix(&m);
 	cam.transform = m;
 	cam.field_of_view = fov;
-	half_view = tan(cam.field_of_view / 2);
-	aspect = cam.hsize / cam.vsize;
+	half_view = tan(cam.field_of_view / 2.0);
+	aspect = cam.hsize / (double)cam.vsize;
 	if (aspect >= 1)
 	{
 		cam.half_width = half_view;
@@ -25,7 +25,7 @@ t_camera new_camera(int hsize, int vsize, double fov)
 		cam.half_width = half_view / aspect;
 		cam.half_height = half_view;
 	}
-	cam.pixel_size = (cam.half_width * 2) / cam.hsize;	
+	cam.pixel_size = (cam.half_width * 2.0) / cam.hsize;	
 	return (cam);
 }
 
@@ -35,28 +35,31 @@ t_ray ray_for_pixel(t_camera camera, int px, int py)
 	double yoffset;
 	double world_x;
 	double world_y;
+	t_matrix temp;
+	t_vec4 pixel;
+	t_vec4 origin;
+	t_vec4 direction;
 
 	xoffset = (px + 0.5) * camera.pixel_size;
 	yoffset = (py + 0.5) *camera.pixel_size;
 	world_x = camera.half_width - xoffset;
 	world_y = camera.half_height - yoffset;
-	
-	t_vec4 pixel;
-	pixel = matrix_vec4_multiply(matrix4x4_inverse(camera.transform), point(world_x, world_y, -1));
-	t_vec4 origin;
-	origin = matrix_vec4_multiply(matrix4x4_inverse(camera.transform), point(0,0,0));
-	t_vec4 direction;
+	temp = matrix4x4_inverse(&camera.transform);	
+	pixel = matrix_vec4_multiply(temp, point(world_x, world_y, -1));
+	origin = matrix_vec4_multiply(temp, point(0, 0, 0));
 	direction = vec4_normalize(vec4_substract(pixel, origin));
 	return (new_ray(origin, direction));
 }
-
+#include <stdio.h>
 t_color		**render(t_camera camera, t_world *world)
 {
 	t_color **pixels;
 	t_ray r;
 	int x;
 	int y;
+	double percent;
 
+	percent = 0;
 	y = 0;
 	pixels = (t_color**)malloc(sizeof(t_color*) * (camera.vsize));
 	while (y < camera.vsize)
@@ -66,10 +69,23 @@ t_color		**render(t_camera camera, t_world *world)
 		while (x < camera.hsize)
 		{
 			r = ray_for_pixel(camera, x, y);
-			pixels[y][x] = color_at(world, r);
+//			if(y == camera.vsize/2 + 10 && x == camera.hsize/2 + 10)
+//			{
+				pixels[y][x] = color_at(world, r);
+//				printf("color: %.1f %.1f %.1f\n", pixels[y][x].r, pixels[y][x].g, pixels[y][x].b);
+//			}
 			x++;
 		}
 		y++;
+		percent = 100 * y / camera.vsize;
+		ft_printf("\rImage done: %d%%", (int)percent);
 	}
+	if (percent >= 100)
+		ft_printf("\nImage rendered!\n");
 	return (pixels);
+}
+
+void	delete_camera(t_camera camera)
+{
+	return ;
 }

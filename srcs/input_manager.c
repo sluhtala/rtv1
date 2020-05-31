@@ -8,6 +8,6 @@ int		input_manager(int key, t_data *data)
 	if (key == SPACE_KEY)
 		image_to_window(data);
 	if (key == 1)
-		img_to_ppm(data->img, "images/image.ppm");
+		img_to_ppm(data->img, "images/image.ppm", data);
 	return (key);
 }

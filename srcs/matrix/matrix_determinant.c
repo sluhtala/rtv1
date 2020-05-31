@@ -1,6 +1,6 @@
 #include "rtv_1.h"
 
-double	determinant2x2(t_2x2matrix *m)
+double	determinant2x2(t_matrix *m)
 {
 	double d;
 	
@@ -8,7 +8,7 @@ double	determinant2x2(t_2x2matrix *m)
 	return (d);
 }
 
-double	determinant3x3(t_3x3matrix *m)
+double	determinant3x3(t_matrix *m)
 {
 	int i;
 	double d;
@@ -23,7 +23,7 @@ double	determinant3x3(t_3x3matrix *m)
 	return (d);
 }
 
-double	determinant4x4(t_4x4matrix *m)
+double	determinant4x4(t_matrix *m)
 {
 	int i;
 	double d;
@@ -37,7 +37,7 @@ double	determinant4x4(t_4x4matrix *m)
 	}
 	return (d);
 }
-
+/*
 t_4x4matrix	new_matrix(double m[4][4])
 {
 	int x;
@@ -57,31 +57,30 @@ t_4x4matrix	new_matrix(double m[4][4])
 	}
 	return (m2);
 }
-
-t_4x4matrix *matrix4x4_inverse(t_4x4matrix *m)
+*/
+t_matrix matrix4x4_inverse(t_matrix *m)
 {
-	t_4x4matrix *m2;
-	t_4x4matrix *inverse;
+	t_matrix m2;
+	t_matrix inverse;
 	double d;
 	int x;
 	int y;
 
 	if (determinant4x4(m) == 0)
-		return (m);
+		return (*m);
 	d = determinant4x4(m);
 	y = 0;
-	inverse = new_4x4matrix();
+	inverse = new_matrix();
 	while (y < 4)
 	{
 		x = 0;
 		while (x < 4)
 		{
-			inverse->m[y][x] = cofactor4x4(m, y, x) / d;
+			inverse.m[y][x] = cofactor4x4(m, y, x) / d;
 			x++;
 		}
 		y++;
 	}
-	m2 = matrix_transpose(inverse);
-	free(inverse);
+	m2 = matrix_transpose(&inverse);
 	return (m2);
 }

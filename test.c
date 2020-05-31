@@ -1,32 +1,32 @@
 #include <stdio.h>
-typedef int matrix[4][4];
 
-int **identity()
+typedef struct s_mat4 
 {
-	static int m[4][4];
+	double m[4][4];
+
+}		t_mat4;
+
+typedef double mat[4][4];
+
+#define matrix "t_mat4.m"
+
+typedef struct s_matrix4
+{
+	double m[4][4];
+	func identity;
+	func inverse;
+	func descriminant;
+	func transpose;
 	
-	m[0][0] = 1;
-	m[0][1] = 0;
-	m[0][2] = 0;
-	m[0][3] = 0;
-	m[1][0] = 0;
-	m[1][1] = 1;
-	m[1][2] = 0;
-	m[1][3] = 0;
-	m[2][0] = 0;
-	m[2][1] = 0;
-	m[2][2] = 1;
-	m[2][3] = 0;
-	m[3][0] = 0;
-	m[3][1] = 0;
-	m[3][2] = 0;
-	m[3][3] = 1;
-	return m;
-}
+
+
+
+}			t_matrix4;
 
 int main()
 {
-	int **mat;
-	mat = (int**)identity();
-	printf("%d\n", mat[0][0]);
+	mat m;
+
+	m[0][0] = 3;
+	printf("%f\n", m[0][0]);
 }

@@ -20,7 +20,7 @@ void	sort_intersect(t_intersection *i, int count)
 	}
 }
 
-static t_intersection intersection(double t, void *object)
+static t_intersection intersection(double t, t_sphere object)
 {
 	t_intersection i;
 
@@ -34,9 +34,9 @@ static t_vec4	get_discriminant(t_vec4 sphere_to_ray, t_ray *ray)
 	t_vec4 d;
 
 	d.x = vec4_dot(ray->direction, ray->direction);
-	d.y = 2 * vec4_dot(ray->direction, sphere_to_ray);
-	d.z = vec4_dot(sphere_to_ray, sphere_to_ray) - 1;
-	d.w = (d.y * d.y) - 4 * d.x * d.z;
+	d.y = 2.0 * vec4_dot(ray->direction, sphere_to_ray);
+	d.z = vec4_dot(sphere_to_ray, sphere_to_ray) - 1.0;
+	d.w = (d.y * d.y) - 4.0 * d.x * d.z;
 	return (d);
 }
 
@@ -61,27 +61,29 @@ t_intersection *intersect_world(t_world *w, t_ray r)
 		}
 		s++;
 	}
-	xs[0].count = i;
 	sort_intersect(xs, i);
+	xs[0].count = i;
 	return (xs);
 }
 
-t_intersection *intersect(t_sphere *s, t_ray r)
+t_intersection *intersect(t_sphere s, t_ray r)
 {
 	t_intersection *xs;
 	t_vec4 d;
 	t_vec4 sphere_to_ray;
 	t_ray r2;
+	t_matrix temp;
 
-	r2 = transform_ray(r, matrix4x4_inverse(s->transform));
+	temp = matrix4x4_inverse(&s.transform);
+	r2 = transform_ray(r, &temp);
 	sphere_to_ray = vec4_substract(r2.origin, point(0, 0, 0));
 	d = get_discriminant(sphere_to_ray, &r2);
 	if (d.w < 0)
 		return (NULL);
 	xs = (t_intersection*)malloc(sizeof(t_intersection) * 2);
 	xs[0].count = 2;
-	xs[0].t = (-d.y - sqrt(d.w)) / (2 * d.x);
-	xs[1].t = (-d.y + sqrt(d.w)) / (2 * d.x);
+	xs[0].t = (-d.y - sqrt(d.w)) / (2.0 * d.x);
+	xs[1].t = (-d.y + sqrt(d.w)) / (2.0 * d.x);
 	xs[0].object = s;
 	xs[1].object = s;
 	xs[0].count = 2;

@@ -3,23 +3,23 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-void	write_header(int file)
+void	write_header(int file, int w, int h)
 {
 	char *text;
 
 	write(file, "P3\n", 3);
-	text = ft_itoa(WIDTH);
+	text = ft_itoa(w);
 	write(file, text, ft_strlen(text));
 	write(file, " ", 1);
 	free(text);
-	text = ft_itoa(HEIGHT);
+	text = ft_itoa(h);
 	write(file, text, ft_strlen(text));
 	free(text);
 	write(file, "\n", 1);
 	write(file, "255\n", 4);
 }
 
-char	*get_line(t_image img, int x, int y)
+char	*get_line(t_image img, int x, int y, t_data *data)
 {
 	char *t;
 	char *temp;
@@ -43,19 +43,19 @@ char	*get_line(t_image img, int x, int y)
 	return (line);
 }
 
-void	write_data(int file, t_image img)
+void	write_data(int file, t_image img, t_data *data)
 {
 	int x;
 	int y;
 	char *line;
 
 	y = 0;
-	while (y < HEIGHT)
+	while (y < data->height)
 	{
 		x = 0;
-		while (x < WIDTH)
+		while (x < data->width)
 		{
-			line = get_line(img, x, y);
+			line = get_line(img, x, y, data);
 			write(file, line, ft_strlen(line));
 			free(line);
 			if (x != 0 && x % 5 == 0)
@@ -70,15 +70,15 @@ void	write_data(int file, t_image img)
 	write(file, "\n", 1);
 }
 
-void	img_to_ppm(t_image img, char *file_name)
+void	img_to_ppm(t_image img, char *file_name, t_data *data)
 {
 	int file;
 	char *text;
 
 	ft_printf("Saving to image.ppm...\n");
 	file = open(file_name, O_RDWR |  O_CREAT , 777);
-	write_header(file);
-	write_data(file, img);
+	write_header(file, data->width, data->height);
+	write_data(file, img, data);
 	ft_printf("Image saved\n");
 	close(file);
 }

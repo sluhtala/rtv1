@@ -31,6 +31,8 @@ t_vec4	vec4_normalize(t_vec4 v)
 	double m;
 
 	m = vec4_magnitude(v);
+	if (m == 0)
+		return (v);
 	v.x /= m;
  	v.y /= m;
  	v.z /= m;
@@ -99,7 +101,7 @@ int		vec4_compare(t_vec4 v1, t_vec4 v2)
 {
 	double epsilon;
 
-	epsilon = 0.000001;
+	epsilon = EPSILON;
 	if (fabs(v1.x - v2.x) < epsilon)
 	{
 		if (fabs(v1.y - v2.y) < epsilon)
