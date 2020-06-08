@@ -1,0 +1,50 @@
+
+rtv1 notes
+
+
+objects
+	sphere
+		material
+		transform
+	sphere
+	cube
+	cylinder
+
+sphere / object
+	transformation
+light
+	position
+ray
+	position
+	direction
+hit
+	position
+normal
+eyevector
+
+
+matrix double[][]
+
+vector x,y,z,w
+
+struct enum union
+
+mlx
+
+
+"digital space"
+	sphere
+	rays
+		origin
+			0,0
+		direction
+	imageplane
+
+mlx
+	window
+		pixels
+			coord
+				0,0
+			color?
+
+parser system and world

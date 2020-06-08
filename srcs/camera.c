@@ -69,11 +69,7 @@ t_color		**render(t_camera camera, t_world *world)
 		while (x < camera.hsize)
 		{
 			r = ray_for_pixel(camera, x, y);
-//			if(y == camera.vsize/2 + 10 && x == camera.hsize/2 + 10)
-//			{
-				pixels[y][x] = color_at(world, r);
-//				printf("color: %.1f %.1f %.1f\n", pixels[y][x].r, pixels[y][x].g, pixels[y][x].b);
-//			}
+			pixels[y][x] = color_at(world, r);
 			x++;
 		}
 		y++;

@@ -1,57 +1,57 @@
 #include "rtv_1.h"
 
-void	put_vec(t_vec4 v)
+
+static t_vec4	get_discriminant(t_vec4 sphere_to_ray, t_ray *ray)
 {
-	ft_printf("vec: %.1f, %.1f, %.1f\n", v.x, v.y, v.z);	
+	t_vec4 d;
+
+	d.x = vec4_dot(ray->direction, ray->direction);
+	d.y = 2.0 * vec4_dot(ray->direction, sphere_to_ray);
+	d.z = vec4_dot(sphere_to_ray, sphere_to_ray) - 1.0;
+	d.w = (d.y * d.y) - 4.0 * d.x * d.z;
+	return (d);
 }
 
-void	set_transform(t_sphere *s, t_matrix transformation)
+t_xs	intersect_sphere(t_sphere *s, t_ray r)
 {
-	t_matrix m;
-	
-	m = s->transform.multiply(s->transform, transformation);
-	s->transform = m;
+	t_xs xs;
+	t_vec4 d;
+	t_vec4 sphere_to_ray;
+	t_matrix temp;
+
+	xs = xs_init();
+	sphere_to_ray = vec4_substract(r.origin, point(0, 0, 0));
+	d = get_discriminant(sphere_to_ray, &r);
+	if (d.w < 0)
+	{
+		xs.i[0].count = 0;
+		return (xs);
+	}
+	//xs = (t_intersection*)malloc(sizeof(t_intersection) * 2);
+	xs.i[0].count = 2;
+	xs.i[0].t = (-d.y - sqrt(d.w)) / (2.0 * d.x);
+	xs.i[1].t = (-d.y + sqrt(d.w)) / (2.0 * d.x);
+	xs.i[0].object = (t_shape*)s;
+	xs.i[1].object = (t_shape*)s;
+	xs.i[0].count = 2;
+	xs.i[1].count = 2;
+	xs.i[0].null = 0;
+	xs.i[1].null = 0;
+	return (xs);
 }
 
-t_vec4		normal_at(t_sphere *s, t_vec4 world_point)
+t_vec4		sphere_normal_at(t_vec4 pnt)
 {
-	t_vec4 object_point;
-	t_vec4 object_normal;
-	t_vec4 world_normal;
-	t_matrix mat;
-	t_matrix mat2;
-	
-	mat = s->transform.inverse(&s->transform);
-	object_point = matrix_vec4_multiply(mat, world_point);
-	object_normal = vec4_substract(object_point, point(0, 0, 0));	
-	mat2 = mat.transpose(&mat);
-	world_normal = matrix_vec4_multiply(mat2, object_normal);
-	world_normal.w = 0;
-	return(vec4_normalize(world_normal));		
-}
-
-t_vec4 reflect(t_vec4 in, t_vec4 normal)
-{
-	t_vec4 r;
-
-	r = vec4_multiply_1(normal, 2.0);
-	r = vec4_multiply_1(r, vec4_dot(in, normal));
-	r = vec4_substract(in, r);
-	return (r);
+	return (vec4_substract(pnt, point(0,0,0)));
 }
 
 
-void		delete_sphere(t_sphere sphere)
-{
-	return ;
-	//	if ((sphere).transform != NULL)
-	//	delete_matrix(sphere.transform);
-}
 
 t_sphere	new_sphere(int id)
 {
 	t_sphere	s;
-
+	
+	s.type = SPHERE;
 	s.transform = new_matrix();
 	s.id = id;
 	s.transform.identity(&s.transform);
