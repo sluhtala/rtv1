@@ -17,7 +17,6 @@ SRCS = 	srcs/main.c \
 		srcs/transformation.c \
 		srcs/new_intersect.c \
 		srcs/ray_manager.c \
-		srcs/sphere.c \
 		srcs/light.c \
 		srcs/tuples.c \
 		srcs/world.c \
@@ -27,6 +26,7 @@ SRCS = 	srcs/main.c \
 		srcs/lighting.c \
 		srcs/objects/shape.c \
 		srcs/scene.c \
+		srcs/objects/sphere.c \
 		srcs/objects/plane.c \
 		srcs/objects/cube.c \
 		srcs/objects/cylinder.c \

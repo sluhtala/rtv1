@@ -1,0 +1,18 @@
+
+
+list of different datatypes
+
+
+shape 
+ 	sphere
+	cube
+	plane
+
+
+shape** =malloc(sizeof(shape*) * shapeamount)
+
+while (i < shapeamount)
+	shapeamount[i] = malloc(sizeof(sphere));
+
+world
+	[t_spheres]
