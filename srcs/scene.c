@@ -22,6 +22,7 @@ void	all_scene(t_world *world, t_camera *cam, t_data *data)
 	world->lights[1] = point_light(point(5,10,-5), new_color(GRAY));
 	*cam = new_camera(data->width, data->height, M_PI / 2);
 	cam->transform = view_transform(point(-3, 2.2, -5), point(-1.5,0,0),vector(0,1,0));
+	cam->inverse = cam->transform.inverse(&cam->transform);
 	//set background planes
 	world->shapes[0] = new_plane(0);
 	world->shapes[1] = new_plane(1);

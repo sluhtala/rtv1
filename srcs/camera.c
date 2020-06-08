@@ -3,15 +3,13 @@
 t_camera new_camera(int hsize, int vsize, double fov)
 {
 	t_camera cam;
-	t_matrix m;
 	double half_view;
 	double aspect;
 
 	cam.hsize = hsize;
 	cam.vsize = vsize;
-	m = new_matrix();
-	set_identity_matrix(&m);
-	cam.transform = m;
+	cam.transform = new_matrix();
+	cam.inverse = new_matrix();
 	cam.field_of_view = fov;
 	half_view = tan(cam.field_of_view / 2.0);
 	aspect = cam.hsize / (double)cam.vsize;
@@ -44,13 +42,14 @@ t_ray ray_for_pixel(t_camera camera, int px, int py)
 	yoffset = (py + 0.5) *camera.pixel_size;
 	world_x = camera.half_width - xoffset;
 	world_y = camera.half_height - yoffset;
-	temp = matrix4x4_inverse(&camera.transform);	
+	//temp = matrix4x4_inverse(&camera.transform);	
+	temp = camera.inverse;
 	pixel = matrix_vec4_multiply(temp, point(world_x, world_y, -1));
 	origin = matrix_vec4_multiply(temp, point(0, 0, 0));
 	direction = vec4_normalize(vec4_substract(pixel, origin));
 	return (new_ray(origin, direction));
 }
-#include <stdio.h>
+
 t_color		**render(t_camera camera, t_world *world)
 {
 	t_color **pixels;

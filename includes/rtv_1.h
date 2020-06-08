@@ -23,8 +23,8 @@
 # define DARKGRAY 0x222222
 # define WHITE 0xffffff
 # define EPSILON 0.000001
-# define WIDTH 600
-# define HEIGHT 400
+# define WIDTH 800
+# define HEIGHT 500
 # define MAX_INTERSECTION 10
 # define SPHERE 1
 # define PLANE 2
@@ -86,6 +86,7 @@ typedef struct	s_camera
 	double		half_width;
 	double		half_height;
 	t_matrix	transform;
+	t_matrix	inverse;
 }				t_camera;
 
 typedef struct	s_light
