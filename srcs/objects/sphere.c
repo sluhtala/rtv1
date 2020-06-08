@@ -43,8 +43,6 @@ t_vec4		sphere_normal_at(t_vec4 pnt)
 	return (vec4_substract(pnt, point(0,0,0)));
 }
 
-
-
 t_sphere	new_sphere(int id)
 {
 	t_sphere	s;
@@ -54,5 +52,6 @@ t_sphere	new_sphere(int id)
 	s.id = id;
 	s.transform.identity(&s.transform);
 	s.material = new_material();
+	s.inverse = new_matrix();
 	return (s);
 }

@@ -92,27 +92,7 @@ int	matrix_4x4_compare(t_matrix *m1, t_matrix *m2)
 	}
 	return (1);
 }
-/*
-void		delete_matrix(t_matrix m)
-{
-	int i;
-	
-	i = 0;
-	if (!m)
-		return ;
-	while (i < 4)
-	{
-		if (m[i])
-			return ;
-		//	free(m[i]);
-		m[i] = NULL;
-		i++;
-	}
-	return ;
-	//free(m);
-	m = NULL;
-}
-*/
+
 void	set_identity_matrix(t_matrix *m)
 {
 	int x;

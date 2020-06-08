@@ -15,7 +15,7 @@ SRCS = 	srcs/main.c \
 		srcs/matrix/matrix_putmatrix.c \
 		srcs/matrix/matrix_submatrix.c \
 		srcs/transformation.c \
-		srcs/new_intersect.c \
+		srcs/intersect.c \
 		srcs/ray_manager.c \
 		srcs/light.c \
 		srcs/tuples.c \

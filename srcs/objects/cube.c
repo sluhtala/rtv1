@@ -35,7 +35,6 @@ t_xs	intersect_cube(t_cube *c, t_ray r)
 	check_axis(r.origin.x, r.direction.x, xt);
 	check_axis(r.origin.y, r.direction.y, yt);
 	check_axis(r.origin.z, r.direction.z, zt);
-
 	t[0] = fmax(xt[0], fmax(yt[0], zt[0]));	
 	t[1] = fmin(xt[1], fmin(yt[1], zt[1]));
 	if (t[0] > t[1])
@@ -76,5 +75,6 @@ t_cube new_cube(int id)
 	c.transform = new_matrix();
 	c.material = new_material();	
 	c.transform.identity(&c.transform);
+	c.inverse = new_matrix();
 	return (c);
 }

@@ -36,6 +36,18 @@ static void	intersect_caps(t_xs *xs, t_cylinder *c, t_ray *r, int i)
 	}
 }
 
+static t_vec4 get_discriminant(t_ray r, t_xs *xs)
+{
+	t_vec4 d;
+
+	*xs = xs_init();
+	d.x = (r.direction.x * r.direction.x + r.direction.z * r.direction.z);
+	d.y = 2 * r.origin.x * r.direction.x + 2 * r.origin.z * r.direction.z;
+	d.z = r.origin.x * r.origin.x + r.origin.z * r.origin.z - 1;
+	d.w = d.y * d.y - 4 * d.x * d.z;
+	return (d);
+}
+
 t_xs	intersect_cylinder(t_cylinder *c, t_ray r)
 {
 	t_xs	xs;
@@ -44,12 +56,7 @@ t_xs	intersect_cylinder(t_cylinder *c, t_ray r)
 	double	y[2];
 	int 	i;
 
-	xs = xs_init();	
-	d.x = (r.direction.x * r.direction.x + r.direction.z * r.direction.z);
-	d.y = 2 * r.origin.x * r.direction.x + 2 * r.origin.z * r.direction.z;
-	d.z = r.origin.x * r.origin.x + r.origin.z * r.origin.z - 1;
-	d.w = d.y * d.y - 4 * d.x * d.z;
-	if (d.w < 0)
+	if ((d = get_discriminant(r, &xs)).w < 0)
 		return (xs);
 	t[0] = (-d.y - sqrt(d.w)) / (2 * d.x);
 	t[1] = (-d.y + sqrt(d.w)) / (2 * d.x);
@@ -57,19 +64,13 @@ t_xs	intersect_cylinder(t_cylinder *c, t_ray r)
 	i = 0;
 	if (c->minimum < y[0] && y[0] < c->maximum)
 	{
-		xs.i[i].t = t[0];
-		xs.i[i].object = (t_shape*)c;
-		xs.i[i].null = 0;
-		xs.i[0].count = i + 1;
+		xs.i[i] = new_intersection(c, t[0], i + 1);
 		i++;
 	}
 	y[1] = r.origin.y + t[1] * r.direction.y;
 	if (c->minimum < y[1] && y[1] < c->maximum)
 	{
-		xs.i[i].t = t[1];
-		xs.i[i].object = (t_shape*)c;
-		xs.i[i].null = 0;
-		xs.i[0].count = i + 1;
+		xs.i[i] = new_intersection(c, t[1], i + 1);
 		i++;
 	}
 	intersect_caps(&xs, c, &r, i);
@@ -100,5 +101,6 @@ t_cylinder new_cylinder(int id)
 	c.minimum = -INFINITY;
 	c.maximum = INFINITY;
 	c.closed = 1;
+	c.inverse = new_matrix();
 	return (c);
 }

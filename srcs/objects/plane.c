@@ -36,5 +36,6 @@ t_plane new_plane(int id)
 	p.transform = new_matrix();
 	p.material = new_material();	
 	p.transform.identity(&p.transform);
+//	p.inverse.identity(&p.inverse);
 	return (p);
 }

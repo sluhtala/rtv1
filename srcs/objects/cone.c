@@ -66,19 +66,13 @@ t_xs	intersect_cone(t_cone *c, t_ray r)
 	i = 0;
 	if (c->minimum < y[0] && y[0] < c->maximum)
 	{
-		xs.i[i].t = t[0];
-		xs.i[i].object = (t_shape*)c;
-		xs.i[i].null = 0;
-		xs.i[0].count = i + 1;
+		xs.i[i] = new_intersection(c, t[0], i + 1);
 		i++;
 	}
 	y[1] = r.origin.y + t[1] * r.direction.y;
 	if (c->minimum < y[1] && y[1] < c->maximum)
 	{
-		xs.i[i].t = t[1];
-		xs.i[i].object = (t_shape*)c;
-		xs.i[i].null = 0;
-		xs.i[0].count = i + 1;
+		xs.i[i] = new_intersection(c, t[1], i + 1);
 		i++;
 	}
 	intersect_caps(&xs, c, &r, i);
@@ -112,5 +106,6 @@ t_cone new_cone(int id)
 	c.minimum = -INFINITY;
 	c.maximum = INFINITY;
 	c.closed = 1;
+	c.inverse = new_matrix();
 	return (c);
 }

@@ -1,5 +1,16 @@
 #include "rtv_1.h"
 
+t_intersection	new_intersection(t_shape *object, double t, int count)
+{
+	t_intersection i;
+
+	i.count = count;
+	i.object = object;
+	i.t = t;
+	i.null = 0;
+	return (i);
+}
+
  t_xs xs_init()
 {
 	int i;
@@ -49,9 +60,6 @@ t_xs	intersect_world(t_world *w, t_ray r)
 
 	s = 0;
 	i = 0;
-	//xs = (t_intersection*)malloc(sizeof(t_intersection) * (w->objectamount * 2));
-	//if (!xs)
-	//	error_manager("MALLOC error");
 	xs = xs_init();
 	while (s < w->objectamount && s < MAX_INTERSECTION)
 	{

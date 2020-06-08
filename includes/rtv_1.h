@@ -23,8 +23,8 @@
 # define DARKGRAY 0x222222
 # define WHITE 0xffffff
 # define EPSILON 0.000001
-# define WIDTH 120
-# define HEIGHT 80
+# define WIDTH 600
+# define HEIGHT 400
 # define MAX_INTERSECTION 10
 # define SPHERE 1
 # define PLANE 2
@@ -98,6 +98,7 @@ typedef struct	s_shape
 {
 	int			type;
 	t_matrix	transform;
+	t_matrix	inverse;
 	t_material	material;
 	t_ray		saved_ray;
 	int			id;
@@ -198,6 +199,7 @@ t_vec4			reflect(t_vec4 in, t_vec4 normal);
 void			set_transform(t_shape *shape, t_matrix transformation);
 t_intersection	*hit(t_xs *iptr);
 t_xs 			intersect(t_shape *shape, t_ray ray);
+t_intersection	new_intersection(t_shape *object, double t, int count);
 t_vec4			normal_at(t_shape *shape, t_vec4 point);
 void			sort_intersect(t_intersection *i, int count);
 t_material		new_material();
