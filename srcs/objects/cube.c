@@ -51,9 +51,8 @@ t_xs	intersect_cube(t_cube *c, t_ray r)
 	return (xs);
 }
 
-t_vec4		cube_normal_at(t_shape* shape, t_vec4 point)
+t_vec4		cube_normal_at(t_vec4 point)
 {
-	t_vec4 v;
 	double maxc;
 	
 	maxc = fmax(fabs(point.x), fmax(fabs(point.y), fabs(point.z)));

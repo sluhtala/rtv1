@@ -80,8 +80,3 @@ t_color		**render(t_camera camera, t_world *world)
 		ft_printf("\nImage rendered!\n");
 	return (pixels);
 }
-
-void	delete_camera(t_camera camera)
-{
-	return ;
-}

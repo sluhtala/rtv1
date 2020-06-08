@@ -3,8 +3,6 @@
 t_vec4	matrix_vec4_multiply(t_matrix m, t_vec4 p)
 {
 	t_vec4		p2;
-	int			x;
-	int			y;
 
 	p2.x = m.m[0][0] * p.x + m.m[0][1] * p.y + m.m[0][2] * p.z + m.m[0][3] * p.w;
 	p2.y = m.m[1][0] * p.x + m.m[1][1] * p.y + m.m[1][2] * p.z + m.m[1][3] * p.w;

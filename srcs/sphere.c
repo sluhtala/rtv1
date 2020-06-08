@@ -17,7 +17,6 @@ t_xs	intersect_sphere(t_sphere *s, t_ray r)
 	t_xs xs;
 	t_vec4 d;
 	t_vec4 sphere_to_ray;
-	t_matrix temp;
 
 	xs = xs_init();
 	sphere_to_ray = vec4_substract(r.origin, point(0, 0, 0));
@@ -27,7 +26,6 @@ t_xs	intersect_sphere(t_sphere *s, t_ray r)
 		xs.i[0].count = 0;
 		return (xs);
 	}
-	//xs = (t_intersection*)malloc(sizeof(t_intersection) * 2);
 	xs.i[0].count = 2;
 	xs.i[0].t = (-d.y - sqrt(d.w)) / (2.0 * d.x);
 	xs.i[1].t = (-d.y + sqrt(d.w)) / (2.0 * d.x);

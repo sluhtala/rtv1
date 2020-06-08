@@ -226,7 +226,7 @@ t_vec4		plane_normal_at();
 t_xs 		intersect_plane(t_plane *p, t_ray r);
 t_plane 	new_plane(int id);
 
-t_vec4		cube_normal_at(t_shape* shape, t_vec4 point);
+t_vec4		cube_normal_at(t_vec4 point);
 t_xs		intersect_cube(t_cube *c, t_ray r);
 t_cube 		new_cube(int id);
 

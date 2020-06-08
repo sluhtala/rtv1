@@ -19,7 +19,7 @@ void	write_header(int file, int w, int h)
 	write(file, "255\n", 4);
 }
 
-char	*get_line(t_image img, int x, int y, t_data *data)
+char	*get_line(t_image img, int x, int y)
 {
 	char *t;
 	char *temp;
@@ -55,7 +55,7 @@ void	write_data(int file, t_image img, t_data *data)
 		x = 0;
 		while (x < data->width)
 		{
-			line = get_line(img, x, y, data);
+			line = get_line(img, x, y);
 			write(file, line, ft_strlen(line));
 			free(line);
 			if (x != 0 && x % 5 == 0)
@@ -73,7 +73,6 @@ void	write_data(int file, t_image img, t_data *data)
 void	img_to_ppm(t_image img, char *file_name, t_data *data)
 {
 	int file;
-	char *text;
 
 	ft_printf("Saving to image.ppm...\n");
 	file = open(file_name, O_RDWR |  O_CREAT , 777);

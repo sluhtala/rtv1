@@ -21,7 +21,7 @@ t_vec4		local_normal_at(t_shape *shape, t_vec4 point)
 	}
 	else if (shape->type == CUBE)
 	{
-		return (cube_normal_at((t_cube*)shape, point));
+		return (cube_normal_at(point));
 	}
 	else if (shape->type == CYLINDER)
 	{
@@ -61,8 +61,9 @@ void	set_transform(t_shape *shape, t_matrix transformation)
 
 t_xs	local_intersect(t_shape *shape, t_ray ray)
 {
-	shape->saved_ray = ray;
 	t_xs xs;
+
+	shape->saved_ray = ray;
 	if (shape->type == SPHERE)
 	{
 		return (intersect_sphere((t_sphere*)shape, ray));
@@ -83,6 +84,7 @@ t_xs	local_intersect(t_shape *shape, t_ray ray)
 	{
 		return (intersect_cone(shape, ray));
 	}
+	xs = xs_init();
 	return (xs);
 }
 
