@@ -6,7 +6,7 @@
 /*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/09 15:53:31 by sluhtala          #+#    #+#             */
-/*   Updated: 2020/06/09 16:09:18 by sluhtala         ###   ########.fr       */
+/*   Updated: 2020/06/09 16:21:59 by sluhtala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,5 +255,6 @@ t_cube			new_cone(int id);
 t_world			new_world(int object_amount, int light_amount);
 void			default_scene(t_world *world, t_camera *cam, t_data *data);
 void			all_objects_scene(t_world *world, t_camera *cam, t_data *data);
+void			tree_scene(t_world *world, t_camera *cam, t_data *data);
 
 #endif

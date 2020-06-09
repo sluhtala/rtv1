@@ -6,7 +6,7 @@
 /*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/09 13:37:07 by sluhtala          #+#    #+#             */
-/*   Updated: 2020/06/09 15:28:05 by sluhtala         ###   ########.fr       */
+/*   Updated: 2020/06/09 16:21:39 by sluhtala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	plane_test(t_data *data)
 	t_camera	cam;
 	t_world		world;
 
-	all_objects_scene(&world, &cam, data);
+	//all_objects_scene(&world, &cam, data);
+	tree_scene(&world, &cam, data);
 	data->img.pixels = render(cam, &world);
 	data->world = world;
 }

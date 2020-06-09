@@ -34,7 +34,8 @@ SRCS = 	srcs/main.c \
 		srcs/objects/cone.c \
 		srcs/objects/cone_part2.c \
 		srcs/scenes/default_scene.c \
-		srcs/scenes/all_obejects_scene.c 
+		srcs/scenes/all_obejects_scene.c \
+		srcs/scenes/tree_scene.c \
 
 OFILES = $(SRCS:.c=.o)
 
