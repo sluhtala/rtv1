@@ -1,5 +1,16 @@
-#include "rtv_1.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sphere.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 13:52:50 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 13:53:56 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "rtv_1.h"
 
 static t_vec4	get_discriminant(t_vec4 sphere_to_ray, t_ray *ray)
 {
@@ -12,11 +23,11 @@ static t_vec4	get_discriminant(t_vec4 sphere_to_ray, t_ray *ray)
 	return (d);
 }
 
-t_xs	intersect_sphere(t_sphere *s, t_ray r)
+t_xs			intersect_sphere(t_sphere *s, t_ray r)
 {
-	t_xs xs;
-	t_vec4 d;
-	t_vec4 sphere_to_ray;
+	t_xs	xs;
+	t_vec4	d;
+	t_vec4	sphere_to_ray;
 
 	xs = xs_init();
 	sphere_to_ray = vec4_substract(r.origin, point(0, 0, 0));
@@ -38,15 +49,15 @@ t_xs	intersect_sphere(t_sphere *s, t_ray r)
 	return (xs);
 }
 
-t_vec4		sphere_normal_at(t_vec4 pnt)
+t_vec4			sphere_normal_at(t_vec4 pnt)
 {
-	return (vec4_substract(pnt, point(0,0,0)));
+	return (vec4_substract(pnt, point(0, 0, 0)));
 }
 
-t_sphere	new_sphere(int id)
+t_sphere		new_sphere(int id)
 {
 	t_sphere	s;
-	
+
 	s.type = SPHERE;
 	s.transform = new_matrix();
 	s.id = id;

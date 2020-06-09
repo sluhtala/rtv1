@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   light.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 13:37:57 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:12:31 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
-#include <stdio.h>
-void	putcol(t_color c)
+
+void		putcol(t_color c)
 {
-	printf("color %f %f %f %f\n\n", c.r, c.g ,c.b, c.a);
+	ft_printf("color %f %f %f %f\n\n", c.r, c.g, c.b, c.a);
 }
 
-
-t_material	new_material()
+t_material	new_material(void)
 {
 	t_material m;
 
@@ -14,7 +25,7 @@ t_material	new_material()
 	m.ambient = 0.15;
 	m.diffuse = 0.9;
 	m.specular = 0.9;
-	m.shininess = 200.0;	
+	m.shininess = 200.0;
 	return (m);
 }
 

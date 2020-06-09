@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tuples.c                                           :+:      :+:    :+:   */
+/*   default_scene.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/09 15:13:29 by sluhtala          #+#    #+#             */
-/*   Updated: 2020/06/09 15:14:02 by sluhtala         ###   ########.fr       */
+/*   Created: 2020/06/09 15:49:29 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:50:03 by sluhtala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv_1.h"
 
-t_vec4	point(double x, double y, double z)
+void	default_scene(t_world *world, t_camera *cam, t_data *data)
 {
-	return (new_vec4(x, y, z, 1.0));
-}
+	t_world		dw;
+	t_camera	dc;
 
-t_vec4	vector(double x, double y, double z)
-{
-	return (new_vec4(x, y, z, 0.0));
+	dw = default_world();
+	dc = new_camera(data->width, data->height, M_PI / 2);
+	dc.transform = view_transform(point(0, 4, -5), point(0, 2, 0),
+		vector(0, 1, .3));
+	*world = dw;
+	*cam = dc;
 }

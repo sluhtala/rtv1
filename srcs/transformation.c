@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   transformation.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 15:03:25 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:05:34 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
 t_matrix		translate(double x, double y, double z)
 {
 	t_matrix	m;
 
-	m = new_matrix();	
+	m = new_matrix();
 	m.m[0][0] = 1;
 	m.m[0][1] = 0;
 	m.m[0][2] = 0;
@@ -21,15 +33,14 @@ t_matrix		translate(double x, double y, double z)
 	m.m[3][1] = 0;
 	m.m[3][2] = 0;
 	m.m[3][3] = 1;
-	return (m);	
+	return (m);
 }
 
 t_matrix		scale(double x, double y, double z)
 {
 	t_matrix	m;
 
-	m = new_matrix();	
-
+	m = new_matrix();
 	m.m[0][0] = x;
 	m.m[0][1] = 0;
 	m.m[0][2] = 0;
@@ -46,7 +57,7 @@ t_matrix		scale(double x, double y, double z)
 	m.m[3][1] = 0;
 	m.m[3][2] = 0;
 	m.m[3][3] = 1;
-	return (m);	
+	return (m);
 }
 
 t_matrix		rotate_x(double r)
@@ -70,15 +81,14 @@ t_matrix		rotate_x(double r)
 	m.m[3][1] = 0;
 	m.m[3][2] = 0;
 	m.m[3][3] = 1;
-	return (m);	
+	return (m);
 }
 
 t_matrix		rotate_y(double r)
 {
 	t_matrix	m;
 
-	m = new_matrix();	
-
+	m = new_matrix();
 	m.m[0][0] = cos(r);
 	m.m[0][1] = 0;
 	m.m[0][2] = sin(r);
@@ -95,15 +105,14 @@ t_matrix		rotate_y(double r)
 	m.m[3][1] = 0;
 	m.m[3][2] = 0;
 	m.m[3][3] = 1;
-	return (m);	
+	return (m);
 }
 
 t_matrix		rotate_z(double r)
 {
 	t_matrix	m;
 
-	m = new_matrix();	
-
+	m = new_matrix();
 	m.m[0][0] = cos(r);
 	m.m[0][1] = -sin(r);
 	m.m[0][2] = 0;
@@ -120,5 +129,5 @@ t_matrix		rotate_z(double r)
 	m.m[3][1] = 0;
 	m.m[3][2] = 0;
 	m.m[3][3] = 1;
-	return (m);	
+	return (m);
 }

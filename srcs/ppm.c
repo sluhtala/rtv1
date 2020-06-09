@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ppm.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 13:37:27 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:36:32 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 #include <fcntl.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 
 void	write_header(int file, int w, int h)
 {
@@ -45,9 +56,9 @@ char	*get_line(t_image img, int x, int y)
 
 void	write_data(int file, t_image img, t_data *data)
 {
-	int x;
-	int y;
-	char *line;
+	int		x;
+	int		y;
+	char	*line;
 
 	y = 0;
 	while (y < data->height)
@@ -75,7 +86,7 @@ void	img_to_ppm(t_image img, char *file_name, t_data *data)
 	int file;
 
 	ft_printf("Saving to image.ppm...\n");
-	file = open(file_name, O_RDWR |  O_CREAT , 777);
+	file = open(file_name, O_RDWR | O_CREAT, 777);
 	write_header(file, data->width, data->height);
 	write_data(file, img, data);
 	ft_printf("Image saved\n");

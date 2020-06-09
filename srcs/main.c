@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 13:37:07 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:28:05 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 #include <stdio.h>
 
@@ -31,12 +43,12 @@ void	close_program(t_data *data)
 	exit(0);
 }
 
-void plane_test(t_data *data)
+void	plane_test(t_data *data)
 {
-	t_camera cam;
-	t_world world;
+	t_camera	cam;
+	t_world		world;
 
-	all_scene(&world, &cam, data);
+	all_objects_scene(&world, &cam, data);
 	data->img.pixels = render(cam, &world);
 	data->world = world;
 }
@@ -51,12 +63,11 @@ int		main(int argc, char **argv)
 	data.opt.auto_image = 0;
 	data.width = WIDTH;
 	data.height = HEIGHT;
-
 	plane_test(&data);
 	init_rt(&data);
 	update_buffer(&data);
 	image_to_window(&data);
-	if(data.opt.auto_image == 1)
+	if (data.opt.auto_image == 1)
 		img_to_ppm(data.img, "images/image_auto.ppm", &data);
 	if (data.opt.simple == 0)
 	{

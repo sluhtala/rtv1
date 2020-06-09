@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lighting.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 15:23:54 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:25:58 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
-t_vec4 reflect(t_vec4 in, t_vec4 normal)
+t_vec4		reflect(t_vec4 in, t_vec4 normal)
 {
 	t_vec4 r;
 
@@ -12,29 +24,28 @@ t_vec4 reflect(t_vec4 in, t_vec4 normal)
 
 static void	calculate_diff_spec(t_lighting *l)
 {
-
-		l->diffuse = color_multiply_1(l->effective_color, l->material->diffuse 
-		* l->light_dot_normal);
-		l->reflectv = reflect(vec4_multiply_1(l->lightv, -1.0), l->normalv);
-		l->reflect_dot_eye = vec4_dot(l->reflectv, l->eyev);
-		if (l->reflect_dot_eye <= 0)
-			l->specular = new_color(0);
-		else
-		{
-			l->factor = pow(l->reflect_dot_eye, l->material->shininess);
-			l->specular = color_multiply_1(l->light.intensitivity, 
-				l->material->specular);
-			l->specular = color_multiply_1(l->specular, l->factor);
-		}
+	l->diffuse = color_multiply_1(l->effective_color, l->material->diffuse
+	* l->light_dot_normal);
+	l->reflectv = reflect(vec4_multiply_1(l->lightv, -1.0), l->normalv);
+	l->reflect_dot_eye = vec4_dot(l->reflectv, l->eyev);
+	if (l->reflect_dot_eye <= 0)
+		l->specular = new_color(0);
+	else
+	{
+		l->factor = pow(l->reflect_dot_eye, l->material->shininess);
+		l->specular = color_multiply_1(l->light.intensitivity,
+			l->material->specular);
+		l->specular = color_multiply_1(l->specular, l->factor);
+	}
 }
 
 t_color		lighting(t_lighting *l)
 {
-	l->effective_color = color_multiply(l->material->color, 
-		l->light.intensitivity);	
-	l->lightv = vec4_normalize(vec4_substract(l->light.position, 
+	l->effective_color = color_multiply(l->material->color,
+		l->light.intensitivity);
+	l->lightv = vec4_normalize(vec4_substract(l->light.position,
 		l->point));
-	l->ambient = color_multiply_1(l->effective_color, 
+	l->ambient = color_multiply_1(l->effective_color,
 		l->material->ambient);
 	l->light_dot_normal = vec4_dot(l->lightv, l->normalv);
 	if (l->in_shadow || l->light_dot_normal < 0)

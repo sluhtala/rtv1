@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shape.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 14:14:26 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 14:20:37 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
 t_vec4		local_normal_at(t_shape *shape, t_vec4 point)
@@ -12,7 +24,7 @@ t_vec4		local_normal_at(t_shape *shape, t_vec4 point)
 	}
 	else if (shape->type == CUBE)
 	{
-		return (cube_normal_at( point));
+		return (cube_normal_at(point));
 	}
 	else if (shape->type == CYLINDER)
 	{
@@ -27,24 +39,21 @@ t_vec4		local_normal_at(t_shape *shape, t_vec4 point)
 
 t_vec4		normal_at(t_shape *shape, t_vec4 point)
 {
-	t_vec4 local_point;
-	t_vec4 local_normal;
-	t_vec4 world_normal;
-	t_matrix inv;
+	t_vec4		local_point;
+	t_vec4		local_normal;
+	t_vec4		world_normal;
+	t_matrix	inv;
 
-//	local_point = matrix_vec4_multiply(
-//		matrix4x4_inverse(&shape->transform), point);
 	local_point = matrix_vec4_multiply(shape->inverse, point);
 	local_normal = local_normal_at(shape, local_point);
-//	inv = matrix4x4_inverse(&shape->transform);
 	inv = shape->inverse;
 	world_normal = matrix_vec4_multiply(
-		matrix_transpose(&inv), local_normal);	
+		matrix_transpose(&inv), local_normal);
 	world_normal.w = 0;
 	return (vec4_normalize(world_normal));
 }
 
-void	set_transform(t_shape *shape, t_matrix transformation)
+void		set_transform(t_shape *shape, t_matrix transformation)
 {
 	t_matrix m;
 
@@ -53,7 +62,7 @@ void	set_transform(t_shape *shape, t_matrix transformation)
 	shape->inverse = shape->transform.inverse(&shape->transform);
 }
 
-t_xs	local_intersect(t_shape *shape, t_ray ray)
+t_xs		local_intersect(t_shape *shape, t_ray ray)
 {
 	shape->saved_ray = ray;
 	if (shape->type == SPHERE)
@@ -79,12 +88,11 @@ t_xs	local_intersect(t_shape *shape, t_ray ray)
 	return (xs_init());
 }
 
-t_xs	intersect(t_shape *shape, t_ray ray)
+t_xs		intersect(t_shape *shape, t_ray ray)
 {
-	t_ray local_ray;
-	t_matrix invers;
+	t_ray		local_ray;
+	t_matrix	invers;
 
-	//invers = shape->transform.inverse(&shape->transform);
 	invers = shape->inverse;
 	local_ray = transform_ray(ray, &invers);
 	return (local_intersect(shape, local_ray));

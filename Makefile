@@ -10,6 +10,7 @@ SRCS = 	srcs/main.c \
 		srcs/colors/color_manager.c \
 		srcs/colors/color_convert.c \
 		srcs/matrix/matrix_manager.c \
+		srcs/matrix/matrix_init.c \
 		srcs/matrix/matrix_manager_2.c \
 		srcs/matrix/matrix_determinant.c \
 		srcs/matrix/matrix_putmatrix.c \
@@ -25,12 +26,15 @@ SRCS = 	srcs/main.c \
 		srcs/prepare_computation.c \
 		srcs/lighting.c \
 		srcs/objects/shape.c \
-		srcs/scene.c \
 		srcs/objects/sphere.c \
 		srcs/objects/plane.c \
 		srcs/objects/cube.c \
 		srcs/objects/cylinder.c \
-		srcs/objects/cone.c
+		srcs/objects/cylinder_part2.c \
+		srcs/objects/cone.c \
+		srcs/objects/cone_part2.c \
+		srcs/scenes/default_scene.c \
+		srcs/scenes/all_obejects_scene.c 
 
 OFILES = $(SRCS:.c=.o)
 

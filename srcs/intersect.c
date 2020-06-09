@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intersect.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 15:05:50 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:08:42 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
 t_intersection	new_intersection(t_shape *object, double t, int count)
@@ -11,10 +23,11 @@ t_intersection	new_intersection(t_shape *object, double t, int count)
 	return (i);
 }
 
- t_xs xs_init()
+t_xs			xs_init(void)
 {
-	int i;
-	t_xs xs;
+	int		i;
+	t_xs	xs;
+
 	i = 0;
 	while (i < MAX_INTERSECTION)
 	{
@@ -22,14 +35,14 @@ t_intersection	new_intersection(t_shape *object, double t, int count)
 		xs.i[i].null = 1;
 		xs.i[i].t = -100;
 		i++;
-	}	
+	}
 	return (xs);
 }
 
-void	sort_intersect(t_intersection *xs, int count)
+void			sort_intersect(t_intersection *xs, int count)
 {
-	int j;
-	t_intersection temp;
+	int				j;
+	t_intersection	temp;
 
 	j = 0;
 	while (j + 1 < count)
@@ -46,17 +59,12 @@ void	sort_intersect(t_intersection *xs, int count)
 	}
 }
 
-typedef struct	s_test
-{
-	int aa;
-}				t_test;
-
-t_xs	intersect_world(t_world *w, t_ray r)
+t_xs			intersect_world(t_world *w, t_ray r)
 {
 	t_xs	xs;
 	t_xs	tmp;
-	int i;
-	int s;
+	int		i;
+	int		s;
 
 	s = 0;
 	i = 0;
@@ -78,13 +86,11 @@ t_xs	intersect_world(t_world *w, t_ray r)
 	return (xs);
 }
 
-
-
-t_intersection *hit(t_xs *inter)
+t_intersection	*hit(t_xs *inter)
 {
-	int i;
-	int count;
-	t_intersection *smallest;
+	int				i;
+	int				count;
+	t_intersection	*smallest;
 
 	if (inter == NULL)
 		return (NULL);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rtv_init.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 15:09:53 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:11:37 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
 void	init_pixels(t_color **pix, int x, int y)
@@ -29,11 +41,11 @@ void	init_rt(t_data *data)
 	data->img.buf = NULL;
 	data->mlx.ptr = mlx_init();
 	if (data->opt.simple == 0)
-		data->mlx.win = mlx_new_window(data->mlx.ptr, 
+		data->mlx.win = mlx_new_window(data->mlx.ptr,
 			data->width, data->height, TITLE);
 	data->img.ptr = mlx_new_image(data->mlx.ptr, data->width, data->height);
 	data->img.buf = mlx_get_data_addr(data->img.ptr,
-		 &data->img.bit_pix, &data->img.size_line, &data->img.endian);
+		&data->img.bit_pix, &data->img.size_line, &data->img.endian);
 }
 
 void	image_to_window(t_data *data)
@@ -42,15 +54,15 @@ void	image_to_window(t_data *data)
 	{
 		mlx_clear_window(data->mlx.ptr, data->mlx.win);
 		mlx_put_image_to_window(data->mlx.ptr, data->mlx.win,
-		 data->img.ptr, 0, 0);
+		data->img.ptr, 0, 0);
 	}
 }
 
 void	update_buffer(t_data *data)
 {
-	int ixy[3];
-	t_icolor color;
-	
+	int			ixy[3];
+	t_icolor	color;
+
 	ixy[0] = 0;
 	while (ixy[0] < data->height * data->width * 4)
 	{

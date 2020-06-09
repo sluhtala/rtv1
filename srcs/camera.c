@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   camera.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 13:42:32 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:48:56 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
-t_camera new_camera(int hsize, int vsize, double fov)
+t_camera	new_camera(int hsize, int vsize, double fov)
 {
-	t_camera cam;
-	double half_view;
-	double aspect;
+	t_camera	cam;
+	double		half_view;
+	double		aspect;
 
 	cam.hsize = hsize;
 	cam.vsize = vsize;
@@ -23,28 +35,28 @@ t_camera new_camera(int hsize, int vsize, double fov)
 		cam.half_width = half_view / aspect;
 		cam.half_height = half_view;
 	}
-	cam.pixel_size = (cam.half_width * 2.0) / cam.hsize;	
+	cam.pixel_size = (cam.half_width * 2.0) / cam.hsize;
 	return (cam);
 }
 
-t_ray ray_for_pixel(t_camera camera, int px, int py)
-{
-	double xoffset;
-	double yoffset;
-	double world_x;
-	double world_y;
-	t_matrix temp;
-	t_vec4 pixel;
-	t_vec4 origin;
-	t_vec4 direction;
+/*
+** double xyxy = xoffset, yoffset, worldx, worldy
+*/
 
-	xoffset = (px + 0.5) * camera.pixel_size;
-	yoffset = (py + 0.5) *camera.pixel_size;
-	world_x = camera.half_width - xoffset;
-	world_y = camera.half_height - yoffset;
-	//temp = matrix4x4_inverse(&camera.transform);	
+t_ray		ray_for_pixel(t_camera camera, int px, int py)
+{
+	double		xyxy[4];
+	t_matrix	temp;
+	t_vec4		pixel;
+	t_vec4		origin;
+	t_vec4		direction;
+
+	xyxy[0] = (px + 0.5) * camera.pixel_size;
+	xyxy[1] = (py + 0.5) * camera.pixel_size;
+	xyxy[2] = camera.half_width - xyxy[0];
+	xyxy[3] = camera.half_height - xyxy[1];
 	temp = camera.inverse;
-	pixel = matrix_vec4_multiply(temp, point(world_x, world_y, -1));
+	pixel = matrix_vec4_multiply(temp, point(xyxy[2], xyxy[3], -1));
 	origin = matrix_vec4_multiply(temp, point(0, 0, 0));
 	direction = vec4_normalize(vec4_substract(pixel, origin));
 	return (new_ray(origin, direction));
@@ -52,14 +64,15 @@ t_ray ray_for_pixel(t_camera camera, int px, int py)
 
 t_color		**render(t_camera camera, t_world *world)
 {
-	t_color **pixels;
-	t_ray r;
-	int x;
-	int y;
-	double percent;
+	t_color	**pixels;
+	t_ray	r;
+	int		x;
+	int		y;
+	double	percent;
 
 	percent = 0;
 	y = 0;
+	camera.inverse = camera.transform.inverse(&camera.transform);
 	pixels = (t_color**)malloc(sizeof(t_color*) * (camera.vsize));
 	while (y < camera.vsize)
 	{
@@ -68,11 +81,9 @@ t_color		**render(t_camera camera, t_world *world)
 		while (x < camera.hsize)
 		{
 			r = ray_for_pixel(camera, x, y);
-			pixels[y][x] = color_at(world, r);
-			x++;
+			pixels[y][x++] = color_at(world, r);
 		}
-		y++;
-		percent = 100 * y / camera.vsize;
+		percent = 100 * ++y / camera.vsize;
 		ft_printf("\rImage done: %d%%", (int)percent);
 	}
 	if (percent >= 100)

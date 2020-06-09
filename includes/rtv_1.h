@@ -1,8 +1,20 @@
-#ifndef RTV_1_H
-#define RTV_1_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rtv_1.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 15:53:31 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 16:09:18 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <libft.h>
-#include "ft_printf.h"
+#ifndef RTV_1_H
+# define RTV_1_H
+
+# include <libft.h>
+# include "ft_printf.h"
 # include <math.h>
 # include "mlx.h"
 # include <pthread.h>
@@ -54,7 +66,6 @@ typedef struct	s_image
 	t_color		**pixels;
 }				t_image;
 
-
 typedef struct	s_ray
 {
 	t_vec4		origin;
@@ -67,8 +78,7 @@ typedef	struct	s_inters
 	double		t[2];
 }				t_inters;
 
-
-typedef struct s_material
+typedef struct	s_material
 {
 	t_color	color;
 	double	ambient;
@@ -109,12 +119,12 @@ typedef struct	s_shape
 }				t_shape;
 
 typedef	t_shape	t_sphere;
-typedef t_shape t_plane;
-typedef t_shape t_cube;
-typedef t_shape t_cylinder;
-typedef t_shape t_cone;
+typedef t_shape	t_plane;
+typedef t_shape	t_cube;
+typedef t_shape	t_cylinder;
+typedef t_shape	t_cone;
 
-typedef struct s_intersection
+typedef struct	s_intersection
 {
 	double	t;
 	int		count;
@@ -148,21 +158,21 @@ typedef struct	s_world
 
 typedef struct	s_lighting
 {
-	t_material *material;
+	t_material	*material;
 	t_light		light;
 	t_vec4		point;
 	t_vec4		eyev;
 	t_vec4		normalv;
-	int			in_shadow;	
-	t_color	effective_color;
-	t_vec4	lightv;
-	t_color	ambient;
-	t_color	diffuse;
-	t_color	specular;
-	t_vec4	reflectv;
-	double	light_dot_normal;
-	double	reflect_dot_eye;
-	double	factor;
+	int			in_shadow;
+	t_color		effective_color;
+	t_vec4		lightv;
+	t_color		ambient;
+	t_color		diffuse;
+	t_color		specular;
+	t_vec4		reflectv;
+	double		light_dot_normal;
+	double		reflect_dot_eye;
+	double		factor;
 }				t_lighting;
 
 typedef struct	s_data
@@ -199,7 +209,7 @@ t_vec4			position(t_ray ray, double t);
 t_vec4			reflect(t_vec4 in, t_vec4 normal);
 void			set_transform(t_shape *shape, t_matrix transformation);
 t_intersection	*hit(t_xs *iptr);
-t_xs 			intersect(t_shape *shape, t_ray ray);
+t_xs			intersect(t_shape *shape, t_ray ray);
 t_intersection	new_intersection(t_shape *object, double t, int count);
 t_vec4			normal_at(t_shape *shape, t_vec4 point);
 void			sort_intersect(t_intersection *i, int count);
@@ -209,40 +219,41 @@ t_light			point_light(t_vec4 position, t_color intensitivity);
 t_color			lighting(t_lighting *l);
 
 t_sphere		new_sphere(int id);
-t_xs 			intersect_sphere(t_sphere *s, t_ray r);
+t_xs			intersect_sphere(t_sphere *s, t_ray r);
 t_vec4			sphere_normal_at(t_vec4 pnt);
 void			delete_sphere(t_sphere s);
 
+t_camera		new_camera(int hsize, int vsize, double fov);
+t_matrix		view_transform(t_vec4 from, t_vec4 to, t_vec4 up);
+int				sphere_test(t_data *data);
+void			set_identity_matrix(t_matrix *m);
+t_xs			xs_init();
+t_xs			intersect_world(t_world *w, t_ray r);
+t_world			default_world();
+t_color			**render(t_camera camera, t_world *world);
+t_color			color_at(t_world *w, t_ray r);
 
+t_vec4			plane_normal_at();
+t_xs			intersect_plane(t_plane *p, t_ray r);
+t_plane			new_plane(int id);
 
-t_camera 	new_camera(int hsize, int vsize, double fov);
-t_matrix 	view_transform(t_vec4 from,t_vec4 to,t_vec4 up);
-int	 		sphere_test(t_data *data);
-void		set_identity_matrix(t_matrix *m);
-t_xs 		xs_init();
-t_xs		intersect_world(t_world *w, t_ray r);
-t_world		default_world();
-t_color		**render(t_camera camera, t_world *world);
-t_color		color_at(t_world *w, t_ray r);
+t_vec4			cube_normal_at(t_vec4 point);
+t_xs			intersect_cube(t_cube *c, t_ray r);
+t_cube			new_cube(int id);
 
-t_vec4		plane_normal_at();
-t_xs 		intersect_plane(t_plane *p, t_ray r);
-t_plane 	new_plane(int id);
+t_cylinder		new_cylinder(int id);
+t_vec4			cylinder_normal_at(t_shape *shape, t_vec4 point);
+t_xs			intersect_cylinder(t_cylinder *c, t_ray r);
+void			intersect_cylinder_caps(t_xs *xs, t_cylinder *c,
+		t_ray *r, int i);
 
-t_vec4		cube_normal_at(t_vec4 point);
-t_xs		intersect_cube(t_cube *c, t_ray r);
-t_cube 		new_cube(int id);
+t_xs			intersect_cone(t_cone *c, t_ray r);
+void			intersect_cone_caps(t_xs *xs, t_cone *c, t_ray *r, int i);
+t_vec4			cone_normal_at(t_shape *shape, t_vec4 point);
+t_cube			new_cone(int id);
 
-t_cylinder 	new_cylinder(int id);
-t_vec4		cylinder_normal_at(t_shape* shape, t_vec4 point);
-t_xs		intersect_cylinder(t_cylinder *c, t_ray r);
+t_world			new_world(int object_amount, int light_amount);
+void			default_scene(t_world *world, t_camera *cam, t_data *data);
+void			all_objects_scene(t_world *world, t_camera *cam, t_data *data);
 
-t_xs		intersect_cone(t_cone *c, t_ray r);
-t_vec4		cone_normal_at(t_shape* shape, t_vec4 point);
-t_cube 		new_cone(int id);
-
-void		all_scene(t_world *world, t_camera *cam, t_data *data);
-t_world		new_world(int object_amount, int light_amount);
-void		default_scene(t_world *world, t_camera *cam, t_data *data);
-
-# endif
+#endif

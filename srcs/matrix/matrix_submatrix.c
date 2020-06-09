@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix_submatrix.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 15:02:03 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:02:57 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
 t_matrix	submatrix4x4(t_matrix *m, int row, int column)
@@ -6,7 +18,7 @@ t_matrix	submatrix4x4(t_matrix *m, int row, int column)
 	int			yx2[2];
 	t_matrix	result;
 
-	result = new_matrix();;
+	result = new_matrix();
 	yx1[0] = 0;
 	yx2[0] = 0;
 	while (yx2[0] < 3)
@@ -19,7 +31,7 @@ t_matrix	submatrix4x4(t_matrix *m, int row, int column)
 		{
 			if (yx1[1] == column)
 				yx1[1]++;
-			result.m[yx2[0]][yx2[1]] = m->m[yx1[0]][yx1[1]]; 	
+			result.m[yx2[0]][yx2[1]] = m->m[yx1[0]][yx1[1]];
 			yx1[1]++;
 			yx2[1]++;
 		}
@@ -48,7 +60,7 @@ t_matrix	submatrix3x3(t_matrix *m, int row, int column)
 		{
 			if (yx1[1] == column)
 				yx1[1]++;
-			result.m[yx2[0]][yx2[1]] = m->m[yx1[0]][yx1[1]]; 	
+			result.m[yx2[0]][yx2[1]] = m->m[yx1[0]][yx1[1]];
 			yx1[1]++;
 			yx2[1]++;
 		}

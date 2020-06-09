@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   plane.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 14:14:09 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 14:16:58 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
-t_xs	intersect_plane(t_plane *p, t_ray r)
+t_xs		intersect_plane(t_plane *p, t_ray r)
 {
-	t_xs xs;
-	double t;
+	t_xs	xs;
+	double	t;
 
-	xs = xs_init();	
+	xs = xs_init();
 	if (fabs(r.direction.y) < EPSILON)
 	{
 		xs.i[0].count = 0;
-		return (xs);	
+		return (xs);
 	}
 	t = -r.origin.y / r.direction.y;
 	xs.i[0].t = t;
@@ -19,23 +31,22 @@ t_xs	intersect_plane(t_plane *p, t_ray r)
 	return (xs);
 }
 
-t_vec4		plane_normal_at()
+t_vec4		plane_normal_at(void)
 {
 	t_vec4 v;
 
 	v = vector(0, 1, 0);
-	return (v);		
+	return (v);
 }
 
-t_plane new_plane(int id)
+t_plane		new_plane(int id)
 {
 	t_plane p;
 
 	p.type = PLANE;
 	p.id = id;
 	p.transform = new_matrix();
-	p.material = new_material();	
+	p.material = new_material();
 	p.transform.identity(&p.transform);
-//	p.inverse.identity(&p.inverse);
 	return (p);
 }

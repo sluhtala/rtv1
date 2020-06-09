@@ -1,40 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_manager.c                                   :+:      :+:    :+:   */
+/*   matrix_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/09 14:50:57 by sluhtala          #+#    #+#             */
-/*   Updated: 2020/06/09 14:51:41 by sluhtala         ###   ########.fr       */
+/*   Created: 2020/06/09 14:53:13 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 14:55:33 by sluhtala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv_1.h"
 
-int		vec4_compare(t_vec4 v1, t_vec4 v2)
+void			set_identity_matrix(t_matrix *m)
 {
-	double epsilon;
+	int x;
+	int y;
 
-	epsilon = EPSILON;
-	if (fabs(v1.x - v2.x) < epsilon)
+	y = 0;
+	while (y < 4)
 	{
-		if (fabs(v1.y - v2.y) < epsilon)
+		x = 0;
+		while (x < 4)
 		{
-			if (fabs(v1.z - v2.z) < epsilon)
-				return (1);
+			m->m[y][x] = 0;
+			if (x == y)
+				m->m[y][x] = 1;
+			x++;
 		}
+		y++;
 	}
-	return (0);
 }
 
-t_vec4	new_vec4(double x, double y, double z, double w)
+t_matrix		new_matrix(void)
 {
-	t_vec4 v;
+	t_matrix m;
 
-	v.x = x;
-	v.y = y;
-	v.z = z;
-	v.w = w;
-	return (v);
+	m.inverse = &matrix4x4_inverse;
+	m.transpose = &matrix_transpose;
+	m.multiply = &matrix_multiply;
+	m.multiply_vec = &matrix_vec4_multiply;
+	m.putmatrix = &put4x4matrix;
+	m.identity = &set_identity_matrix;
+	m.identity(&m);
+	return (m);
 }

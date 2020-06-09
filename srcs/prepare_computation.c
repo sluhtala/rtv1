@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prepare_computation.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 15:28:15 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 15:34:41 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
 t_computations	prepare_computations(t_intersection inter, t_ray r)
@@ -8,7 +20,7 @@ t_computations	prepare_computations(t_intersection inter, t_ray r)
 	comps.object = (t_shape*)inter.object;
 	comps.point = position(r, comps.t);
 	comps.eyev = vec4_multiply_1(r.direction, -1);
-	comps.normalv = normal_at((t_shape*)comps.object, comps.point);	
+	comps.normalv = normal_at((t_shape*)comps.object, comps.point);
 	if (vec4_dot(comps.normalv, comps.eyev) < 0)
 	{
 		comps.inside = 1;
@@ -16,50 +28,45 @@ t_computations	prepare_computations(t_intersection inter, t_ray r)
 	}
 	else
 		comps.inside = 0;
-	comps.over_point = vec4_add(comps.point,vec4_multiply_1(comps.normalv, EPSILON));
+	comps.over_point = vec4_add(comps.point, vec4_multiply_1(
+		comps.normalv, EPSILON));
 	return (comps);
 }
 
-int	is_shadowed(t_world *world, t_vec4 pnt, int i)
+int				is_shadowed(t_world *world, t_vec4 pnt, int i)
 {
-	t_vec4 v;
-	t_vec4 direction;
-	double distance;
-	t_ray r;
-	t_xs xs;
-	t_intersection *h;
+	t_vec4			v;
+	double			distance;
+	t_ray			r;
+	t_xs			xs;
+	t_intersection	*h;
 
-	v = vec4_substract(world->lights[i].position, pnt); 
+	v = vec4_substract(world->lights[i].position, pnt);
 	distance = vec4_magnitude(v);
-	direction = vec4_normalize(v); 
-	r = new_ray(pnt, direction);
+	r = new_ray(pnt, vec4_normalize(v));
 	xs = intersect_world(world, r);
 	if ((h = hit(&xs)) && h->t < distance)
-	{
 		return (1);
-	}
 	return (0);
 }
 
-t_color		shade_hit(t_world *w, t_computations comps)
+t_color			shade_hit(t_world *w, t_computations comps)
 {
-	t_color col;
-	t_color temp;
-	int i;
-	int shadow;
-	t_lighting l;
+	t_color		col;
+	t_color		temp;
+	int			i;
+	t_lighting	l;
 
 	i = 0;
 	col = new_color(0);
 	while (i < w->lightamount)
 	{
-		shadow = is_shadowed(w, comps.over_point, i);
 		l.material = &comps.object->material;
 		l.light = w->lights[i];
 		l.point = comps.point;
 		l.eyev = comps.eyev;
 		l.normalv = comps.normalv;
-		l.in_shadow = shadow;
+		l.in_shadow = is_shadowed(w, comps.over_point, i);
 		temp = lighting(&l);
 		col = color_add(col, temp);
 		i++;
@@ -67,11 +74,11 @@ t_color		shade_hit(t_world *w, t_computations comps)
 	return (col);
 }
 
-t_color		color_at(t_world *w, t_ray r)
+t_color			color_at(t_world *w, t_ray r)
 {
 	t_xs			xs;
-	t_intersection *h;
-	t_computations comps;
+	t_intersection	*h;
+	t_computations	comps;
 
 	xs = intersect_world(w, r);
 	if (!(h = hit(&xs)))
@@ -79,5 +86,5 @@ t_color		color_at(t_world *w, t_ray r)
 		return (new_color(0));
 	}
 	comps = prepare_computations(*h, r);
-	return (shade_hit(w, comps));	
+	return (shade_hit(w, comps));
 }

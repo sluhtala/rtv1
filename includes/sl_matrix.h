@@ -1,18 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sl_matrix.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 16:03:09 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 16:05:50 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SL_MATRIX_H
-#define SL_MATRIX_H
+# define SL_MATRIX_H
 
 typedef struct	s_matrix
 {
-	double	m[4][4];
-	struct	s_matrix (*inverse)(struct s_matrix*);	
-	struct	s_matrix (*multiply)(struct s_matrix, struct s_matrix);
-	t_vec4	(*multiply_vec)(struct s_matrix, t_vec4);
-	void	(*identity)(struct s_matrix*);
-	struct	s_matrix(*transpose)(struct s_matrix*);
-	void	(*putmatrix)(struct s_matrix);
+	double				m[4][4];
+	struct s_matrix		(*inverse)(struct s_matrix*);
+	struct s_matrix		(*multiply)(struct s_matrix, struct s_matrix);
+	t_vec4				(*multiply_vec)(struct s_matrix, t_vec4);
+	void				(*identity)(struct s_matrix*);
+	struct s_matrix		(*transpose)(struct s_matrix*);
+	void				(*putmatrix)(struct s_matrix);
 }				t_matrix;
 
-t_matrix		new_matrix();
+t_matrix		new_matrix(void);
 t_matrix		matrix_multiply(t_matrix m1, t_matrix m2);
 t_vec4			matrix_vec4_multiply(t_matrix m, t_vec4 p);
 int				matrix_4x4_compare(t_matrix *m1, t_matrix *m2);

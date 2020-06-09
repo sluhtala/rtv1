@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color_convert.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 13:44:54 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 13:45:30 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
-static unsigned char convert_uint8(double col)
+static unsigned char	convert_uint8(double col)
 {
 	char new;
 
@@ -13,7 +25,7 @@ static unsigned char convert_uint8(double col)
 	return (new);
 }
 
-t_icolor	color_to_uint8(t_color color)
+t_icolor				color_to_uint8(t_color color)
 {
 	t_icolor new_color;
 

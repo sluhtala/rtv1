@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   objects.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 16:01:02 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 16:01:55 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef OBJECTS_H
-#define OBJECTS_H
+# define OBJECTS_H
 
-#include "rtv_1.h"
+# include "rtv_1.h"
 
-typedef struct s_material
+typedef struct	s_material
 {
 	t_color	color;
 	double	ambient;
@@ -14,13 +26,13 @@ typedef struct s_material
 
 typedef struct	s_camera
 {
-	int hsize;
-	int vsize;
-	double field_of_view;
-	double pixel_size;
-	double half_width;
-	double half_height;
-	t_matrix transform;
+	int			hsize;
+	int			vsize;
+	double		field_of_view;
+	double		pixel_size;
+	double		half_width;
+	double		half_height;
+	t_matrix	transform;
 }				t_camera;
 
 typedef struct	s_light

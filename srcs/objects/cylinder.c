@@ -1,42 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sluhtala <sluhtala@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/09 14:13:52 by sluhtala          #+#    #+#             */
+/*   Updated: 2020/06/09 14:47:07 by sluhtala         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv_1.h"
 
-static int	check_cap(t_ray *r, double t)
-{
-	double x;
-	double z;
-
-	x = r->origin.x + t * r->direction.x;
-	z = r->origin.z + t * r->direction.z;
-	return ((x * x + z * z) <= 1);
-}
-
-static void	intersect_caps(t_xs *xs, t_cylinder *c, t_ray *r, int i)
-{
-	double t;
-
-	if(c->closed == 0 || fabs(r->direction.y) < EPSILON)
-		return ;
-	t = (c->minimum - r->origin.y) / r->direction.y;
-	if (check_cap(r, t))
-	{
-		xs->i[i].t = t; 
-		xs->i[i].object = (t_cylinder*)c;
-		xs->i[i].null = 0;
-		xs->i[0].count++;
-		i++; 
-	}
-	t = (c->maximum - r->origin.y) / r->direction.y;
-	if (check_cap(r, t))
-	{
-		xs->i[i].t = t; 
-		xs->i[i].object = (t_cylinder*)c;
-		xs->i[i].null = 0;
-		xs->i[0].count++;
-		i++; 
-	}
-}
-
-static t_vec4 get_discriminant(t_ray r, t_xs *xs)
+static t_vec4	get_discriminant(t_ray r, t_xs *xs)
 {
 	t_vec4 d;
 
@@ -48,13 +24,13 @@ static t_vec4 get_discriminant(t_ray r, t_xs *xs)
 	return (d);
 }
 
-t_xs	intersect_cylinder(t_cylinder *c, t_ray r)
+t_xs			intersect_cylinder(t_cylinder *c, t_ray r)
 {
 	t_xs	xs;
 	double	t[2];
 	t_vec4	d;
 	double	y[2];
-	int 	i;
+	int		i;
 
 	if ((d = get_discriminant(r, &xs)).w < 0)
 		return (xs);
@@ -73,11 +49,11 @@ t_xs	intersect_cylinder(t_cylinder *c, t_ray r)
 		xs.i[i] = new_intersection(c, t[1], i + 1);
 		i++;
 	}
-	intersect_caps(&xs, c, &r, i);
+	intersect_cylinder_caps(&xs, c, &r, i);
 	return (xs);
 }
 
-t_vec4		cylinder_normal_at(t_shape* shape, t_vec4 point)
+t_vec4			cylinder_normal_at(t_shape *shape, t_vec4 point)
 {
 	double dist;
 
@@ -89,14 +65,14 @@ t_vec4		cylinder_normal_at(t_shape* shape, t_vec4 point)
 	return (vector(point.x, 0, point.z));
 }
 
-t_cylinder new_cylinder(int id)
+t_cylinder		new_cylinder(int id)
 {
 	t_cylinder c;
 
 	c.type = CYLINDER;
 	c.id = id;
 	c.transform = new_matrix();
-	c.material = new_material();	
+	c.material = new_material();
 	c.transform.identity(&c.transform);
 	c.minimum = -INFINITY;
 	c.maximum = INFINITY;
