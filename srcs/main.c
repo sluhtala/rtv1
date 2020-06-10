@@ -13,13 +13,13 @@
 #include "rtv_1.h"
 #include <stdio.h>
 
-void	error_manager(char *str)
+void		error_manager(char *str)
 {
 	perror(str);
 	exit(0);
 }
 
-void	close_program(t_data *data)
+void		close_program(t_data *data)
 {
 	int i;
 
@@ -43,33 +43,32 @@ void	close_program(t_data *data)
 	exit(0);
 }
 
-void	plane_test(t_data *data)
+static void	rtv_1(t_data *data, int scene)
 {
 	t_camera	cam;
 	t_world		world;
 
-	//all_objects_scene(&world, &cam, data);
-	tree_scene(&world, &cam, data);
+	if (scene > 4)
+		scene = 0;
+	select_scene(&world, &cam, data, scene);
 	data->img.pixels = render(cam, &world);
 	data->world = world;
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_data		data;
 
-	if (argc > 2)
-		exit(0);
 	set_options(&data, argc, argv);
-	data.opt.auto_image = 0;
 	data.width = WIDTH;
 	data.height = HEIGHT;
-	plane_test(&data);
 	init_rt(&data);
+	if (argc == 1)
+		rtv_1(&data, 0);
+	else
+		rtv_1(&data, ft_atoi(argv[1]));
 	update_buffer(&data);
 	image_to_window(&data);
-	if (data.opt.auto_image == 1)
-		img_to_ppm(data.img, "images/image_auto.ppm", &data);
 	if (data.opt.simple == 0)
 	{
 		mlx_hook(data.mlx.win, 2, 0, (void*)input_manager, &data);

@@ -36,6 +36,8 @@ SRCS = 	srcs/main.c \
 		srcs/scenes/default_scene.c \
 		srcs/scenes/all_obejects_scene.c \
 		srcs/scenes/tree_scene.c \
+		srcs/scenes/icecream_scene.c \
+		srcs/scenes/ton_cubes_scene.c
 
 OFILES = $(SRCS:.c=.o)
 

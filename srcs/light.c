@@ -22,7 +22,7 @@ t_material	new_material(void)
 	t_material m;
 
 	m.color = new_color(WHITE);
-	m.ambient = 0.15;
+	m.ambient = 0.1;
 	m.diffuse = 0.9;
 	m.specular = 0.9;
 	m.shininess = 200.0;

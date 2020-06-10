@@ -256,5 +256,9 @@ t_world			new_world(int object_amount, int light_amount);
 void			default_scene(t_world *world, t_camera *cam, t_data *data);
 void			all_objects_scene(t_world *world, t_camera *cam, t_data *data);
 void			tree_scene(t_world *world, t_camera *cam, t_data *data);
+void			select_scene(t_world *world, t_camera *cam, t_data *data,
+	int scene);
+void			icecream_scene(t_world *world, t_camera *cam, t_data *data);
+void			ton_cubes_scene(t_world *world, t_camera *cam, t_data *data);
 
 #endif

@@ -33,7 +33,7 @@ t_xs			xs_init(void)
 	{
 		xs.i[i].count = 0;
 		xs.i[i].null = 1;
-		xs.i[i].t = -100;
+		xs.i[i].t = -100000;
 		i++;
 	}
 	return (xs);
@@ -69,10 +69,10 @@ t_xs			intersect_world(t_world *w, t_ray r)
 	s = 0;
 	i = 0;
 	xs = xs_init();
-	while (s < w->objectamount && s < MAX_INTERSECTION)
+	while (s < w->objectamount)
 	{
 		tmp = intersect(&w->shapes[s], r);
-		if (tmp.i[0].null == 0)
+		if (tmp.i[0].null == 0 && i < MAX_INTERSECTION)
 		{
 			xs.i[i] = tmp.i[0];
 			if (tmp.i[0].count == 2)

@@ -19,8 +19,22 @@ void	default_scene(t_world *world, t_camera *cam, t_data *data)
 
 	dw = default_world();
 	dc = new_camera(data->width, data->height, M_PI / 2);
-	dc.transform = view_transform(point(0, 4, -5), point(0, 2, 0),
-		vector(0, 1, .3));
+	dc.transform = view_transform(point(0, 0, -4), point(0, 0, 0),
+		vector(0, 1, 0));
 	*world = dw;
 	*cam = dc;
+}
+
+void	select_scene(t_world *world, t_camera *cam, t_data *data, int scene)
+{
+	if (scene == 0)
+		default_scene(world, cam, data);
+	else if (scene == 1)
+		tree_scene(world, cam, data);
+	else if (scene == 2)
+		icecream_scene(world, cam, data);
+	else if (scene == 3)
+		all_objects_scene(world, cam, data);
+	else if (scene == 4)
+		ton_cubes_scene(world, cam, data);
 }
