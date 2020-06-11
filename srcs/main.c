@@ -59,9 +59,9 @@ int			main(int argc, char **argv)
 {
 	t_data		data;
 
-	set_options(&data, argc, argv);
 	data.width = WIDTH;
 	data.height = HEIGHT;
+	set_options(&data, argc, argv);
 	init_rt(&data);
 	if (argc == 1)
 		rtv_1(&data, 0);

@@ -62,31 +62,39 @@ t_ray		ray_for_pixel(t_camera camera, int px, int py)
 	return (new_ray(origin, direction));
 }
 
+static void	track_percent(int y, int vsize)
+{
+	double percent;
+
+	percent = 100 * y / vsize;
+	ft_printf("\rImage done: %d%%", (int)percent);
+	if (percent >= 100)
+		ft_printf("\nImage rendered!\n");
+}
+
 t_color		**render(t_camera camera, t_world *world)
 {
 	t_color	**pixels;
 	t_ray	r;
 	int		x;
 	int		y;
-	double	percent;
 
-	percent = 0;
 	y = 0;
 	camera.inverse = camera.transform.inverse(&camera.transform);
-	pixels = (t_color**)malloc(sizeof(t_color*) * (camera.vsize));
+	if (!(pixels = (t_color**)malloc(sizeof(t_color*) * camera.vsize)))
+		error_manager("MALLOC error");
 	while (y < camera.vsize)
 	{
 		x = 0;
-		pixels[y] = (t_color*)malloc(sizeof(t_color) * (camera.hsize));
+		if (!(pixels[y] = (t_color*)malloc(sizeof(t_color) * camera.hsize)))
+			error_manager("MALLOC error");
 		while (x < camera.hsize)
 		{
 			r = ray_for_pixel(camera, x, y);
 			pixels[y][x++] = color_at(world, r);
 		}
-		percent = 100 * ++y / camera.vsize;
-		ft_printf("\rImage done: %d%%", (int)percent);
+		y++;
+		track_percent(y, camera.vsize);
 	}
-	if (percent >= 100)
-		ft_printf("\nImage rendered!\n");
 	return (pixels);
 }

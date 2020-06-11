@@ -39,13 +39,20 @@ void	init_rt(t_data *data)
 
 	i = 0;
 	data->img.buf = NULL;
-	data->mlx.ptr = mlx_init();
+	if (!(data->mlx.ptr = mlx_init()))
+		error_manager("Mlx error");
 	if (data->opt.simple == 0)
 		data->mlx.win = mlx_new_window(data->mlx.ptr,
 			data->width, data->height, TITLE);
+	if (!data->mlx.win)
+		error_manager("Mlx error");
 	data->img.ptr = mlx_new_image(data->mlx.ptr, data->width, data->height);
+	if (!data->img.ptr)
+		error_manager("Mlx error");
 	data->img.buf = mlx_get_data_addr(data->img.ptr,
 		&data->img.bit_pix, &data->img.size_line, &data->img.endian);
+	if (!data->img.buf)
+		error_manager("Mlx error");
 }
 
 void	image_to_window(t_data *data)
@@ -97,5 +104,15 @@ void	set_options(t_data *data, int ac, char **av)
 	if (ft_strcmp(av[1], "-s") == 0)
 	{
 		data->opt.simple = 1;
+	}
+	if (ac == 3 || ac == 4)
+	{
+		if ((data->width = ft_atoi(av[2])) == 0)
+			data->width = WIDTH;
+		if (ac == 4)
+			if ((data->height = ft_atoi(av[3])) == 0)
+				data->height = HEIGHT;
+		if (ac == 3)
+			data->height = data->width * 0.7;
 	}
 }

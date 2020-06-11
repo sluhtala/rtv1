@@ -48,6 +48,7 @@ all: $(NAME)
 $(NAME):
 	@echo creating library...
 	@make -C libft
+	@echo library created
 	@echo compiling..
 	@gcc $(SRCS) libft/libft.a -lpthread -o $(NAME) -I includes -l mlx -framework OpenGL -framework AppKit -Wall -Wextra -Werror
 	@echo $(NAME) created

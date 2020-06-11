@@ -87,6 +87,11 @@ void	img_to_ppm(t_image img, char *file_name, t_data *data)
 
 	ft_printf("Saving to image.ppm...\n");
 	file = open(file_name, O_RDWR | O_CREAT, 777);
+	if (file == -1)
+	{
+		ft_printf("Error saving image.\n");
+		return ;
+	}
 	write_header(file, data->width, data->height);
 	write_data(file, img, data);
 	ft_printf("Image saved\n");
