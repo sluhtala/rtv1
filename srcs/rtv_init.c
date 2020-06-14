@@ -107,10 +107,10 @@ void	set_options(t_data *data, int ac, char **av)
 	}
 	if (ac == 3 || ac == 4)
 	{
-		if ((data->width = ft_atoi(av[2])) == 0)
+		if ((data->width = ft_atoi(av[2])) <= 0)
 			data->width = WIDTH;
 		if (ac == 4)
-			if ((data->height = ft_atoi(av[3])) == 0)
+			if ((data->height = ft_atoi(av[3])) <= 0)
 				data->height = HEIGHT;
 		if (ac == 3)
 			data->height = data->width * 0.7;

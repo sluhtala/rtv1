@@ -48,7 +48,7 @@ static void	rtv_1(t_data *data, int scene)
 	t_camera	cam;
 	t_world		world;
 
-	if (scene > 4)
+	if (scene > 4 || scene < 0)
 		scene = 0;
 	select_scene(&world, &cam, data, scene);
 	data->img.pixels = render(cam, &world);
